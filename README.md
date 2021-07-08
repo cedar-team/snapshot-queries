@@ -1,5 +1,7 @@
 # django-snapshot-queries
-Library to snapshot Django ORM queries
+Snapshot SQL in Django ORM queries. This is useful for viewing the underlying SQL that the 
+Django ORM is executing. In addition, it's useful for performance. It makes N+1 queries and other query
+issues easy to identify. If added to a test, code reviewers can see the exact SQL that is added.
 
 ## SnapshotQueries
 
