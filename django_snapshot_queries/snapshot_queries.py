@@ -3,6 +3,14 @@ import json
 
 from django.db import connections
 from django.utils.encoding import force_text
+
+from .timedelta import TimeDelta
+
+from .queries import Queries
+from .query import Query
+from .stacktrace import StackTrace
+from contextlib import contextmanager
+
 try:
     from freezegun.api import real_time
 except ImportError:
@@ -10,27 +18,37 @@ except ImportError:
 
 sql_alchemy_available = False
 try:
-    from sqlalchemy import event
-    from sqlalchemy.engine import Engine
+    import sqlalchemy
+
     sql_alchemy_available = True
 except ImportError:
     pass
-
-from .timedelta import TimeDelta
-
-from .queries import Queries
-from .query import Query
-from .stacktrace import StackTrace
+else:
+    from sqlalchemy import event
+    from sqlalchemy.engine import Engine
 
 
-class SnapshotQueries:
+django_available = False
+try:
+    import django
+except ImportError:
+    pass
+else:
+    from django.db import connections
+    from django.utils.encoding import force_text
+
+    django_available = True
+
+
+@contextmanager
+def snapshot_queries():
     """
     Context Manager for debugging queries executed.
 
     Usage:
 
         from api_app.models import Provider, User
-        with DebugQueries() as queries:
+        with snapshot_queries() as queries:
             User.objects.only('protected_id').get(id=1)
             User.objects.only('protected_id').get(id=1)
             User.objects.only('protected_id').get(id=7)
@@ -64,96 +82,113 @@ class SnapshotQueries:
         # Display queries with similar sql statements
         sim = queries.similar().display()
     """
+    queries = Queries()
 
-    def __init__(self):
-        self._initial_cursors = dict()
-        self._initial_chunked_cursors = dict()
-        self._sqlalchemy_before_cursor_execute = None
-        self._sqlalchemy_after_cursor_execute = None
-        self._queries: Queries = Queries()
+    snapshot_queries_sqlalchemy = (
+        _snapshot_queries_sqlalchemy if sql_alchemy_available else _nullcontextmanager
+    )
 
-    def __enter__(self):
-        def new_cursor(conn):
-            def inner(*args, **kwargs):
-                return _DebugQueriesCursorWrapper(
-                    self._initial_cursors[conn.alias](*args, **kwargs), self._queries
-                )
+    snapshot_queries_django = (
+        _snapshot_queries_sqlalchemy if sql_alchemy_available else _nullcontextmanager
+    )
 
-            return inner
+    with snapshot_queries_sqlalchemy(queries), snapshot_queries_django(queries):
+        yield
 
-        def new_chunked_cursor(conn):
-            def inner(*args, **kwargs):
-                return _DebugQueriesCursorWrapper(
-                    self._initial_chunked_cursors[conn.alias](*args, **kwargs),
-                    self._queries,
-                )
 
-            return inner
+@contextmanager
+def _snapshot_queries_sqlalchemy(queries: Queries):
+    @event.listens_for(Engine, "before_cursor_execute")
+    def sqlalchemy_before_cursor_execute(
+        conn, cursor, statement, parameters, context, executemany
+    ):
+        conn.info.setdefault("query_start_time", []).append(real_time())
 
-        if sql_alchemy_available:
-            @event.listens_for(Engine, "before_cursor_execute")
-            def sqlalchemy_before_cursor_execute(
-                conn, cursor, statement, parameters, context, executemany
-            ):
-                conn.info.setdefault("query_start_time", []).append(real_time())
-    
-            @event.listens_for(Engine, "after_cursor_execute")
-            def sqlalchemy_after_cursor_execute(
-                conn, cursor, statement, parameters, context, executemany
-            ):
-                start_time = conn.info["query_start_time"].pop()
-                stop_time = real_time()
-                sql = statement % parameters
-                stacktrace = StackTrace.load()
-    
-                self._queries.append(
-                    Query(
-                        idx=len(self._queries),
-                        db_type=conn.engine.name,
-                        db="",  # TODO: Figure out if it's possible to get the db name
-                        sql=sql,
-                        sql_parameterized=statement,
-                        duration=TimeDelta(seconds=(stop_time - start_time)),
-                        params=parameters,
-                        raw_params=parameters,
-                        stacktrace=stacktrace,
-                        start_time=start_time,
-                        stop_time=stop_time,
-                        is_select=sql.lower().strip().startswith("select"),
-                    )
-                )
-    
-            self._sqlalchemy_before_cursor_execute = sqlalchemy_before_cursor_execute
-            self._sqlalchemy_after_cursor_execute = sqlalchemy_after_cursor_execute
+    @event.listens_for(Engine, "after_cursor_execute")
+    def sqlalchemy_after_cursor_execute(
+        conn, cursor, statement, parameters, context, executemany
+    ):
+        start_time = conn.info["query_start_time"].pop()
+        stop_time = real_time()
+        sql = statement % parameters
+        stacktrace = StackTrace.load()
 
-        for alias in connections:
-            connection = connections[alias]
-            self._initial_cursors[alias] = connection.cursor
-            self._initial_chunked_cursors[alias] = connection.chunked_cursor
+        queries.append(
+            Query(
+                idx=len(queries),
+                db_type=conn.engine.name,
+                db="",  # TODO: Figure out if it's possible to get the db name
+                sql=sql,
+                sql_parameterized=statement,
+                duration=TimeDelta(seconds=(stop_time - start_time)),
+                params=parameters,
+                raw_params=parameters,
+                stacktrace=stacktrace,
+                start_time=start_time,
+                stop_time=stop_time,
+                is_select=sql.lower().strip().startswith("select"),
+            )
+        )
 
-            # monkey-patch connection.cursor and connection.chunked_cursor
-            connection.cursor = new_cursor(connection)
-            connection.chunked_cursor = new_chunked_cursor(connection)
+    event.remove(
+        Engine,
+        "before_cursor_execute",
+        sqlalchemy_before_cursor_execute,
+    )
 
-        return self._queries
+    event.remove(
+        Engine,
+        "after_cursor_execute",
+        sqlalchemy_after_cursor_execute,
+    )
 
-    def __exit__(self, *args, **kwargs):
-        for alias in connections:
-            connection = connections[alias]
-            connection.cursor = self._initial_cursors[alias]
-            connection.chunked_cursor = self._initial_chunked_cursors[alias]
+    yield
 
-        if sql_alchemy_available:
-            if self._sqlalchemy_before_cursor_execute:
-                event.remove(
-                    Engine, "before_cursor_execute", self._sqlalchemy_before_cursor_execute
-                )
-    
-            if self._sqlalchemy_after_cursor_execute:
-                event.remove(
-                    Engine, "after_cursor_execute", self._sqlalchemy_after_cursor_execute
-                )
+    event.remove(
+        Engine,
+        "before_cursor_execute",
+        sqlalchemy_before_cursor_execute,
+    )
 
+    event.remove(
+        Engine,
+        "after_cursor_execute",
+        sqlalchemy_after_cursor_execute,
+    )
+
+
+@contextmanager
+def _snapshot_queries_django(queries: Queries):
+    initial_cursors = dict()
+    initial_chunked_cursors = dict()
+
+    def new_cursor(conn):
+        def inner(*args, **kwargs):
+            return _DebugQueriesCursorWrapper(
+                initial_cursors[conn.alias](*args, **kwargs), queries
+            )
+
+        return inner
+
+    def new_chunked_cursor(conn):
+        def inner(*args, **kwargs):
+            return _DebugQueriesCursorWrapper(
+                initial_chunked_cursors[conn.alias](*args, **kwargs),
+                queries,
+            )
+
+        return inner
+
+    for alias in connections:
+        connection = connections[alias]
+        initial_cursors[alias] = connection.cursor
+        initial_chunked_cursors[alias] = connection.chunked_cursor
+
+        # monkey-patch connection.cursor and connection.chunked_cursor
+        connection.cursor = new_cursor(connection)
+        connection.chunked_cursor = new_chunked_cursor(connection)
+
+    yield
 
 class _DebugQueriesCursorWrapper:
     def __init__(self, cursor, queries: Queries):
@@ -256,3 +291,10 @@ class _DebugQueriesCursorWrapper:
                 )
             )
         return results
+
+
+@contextmanager
+def _nullcontextmanager(*args, **kwargs):
+    yield
+
+SnapshotQueries = snapshot_queries
