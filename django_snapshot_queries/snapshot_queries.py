@@ -89,11 +89,11 @@ def snapshot_queries():
     )
 
     snapshot_queries_django = (
-        _snapshot_queries_sqlalchemy if sql_alchemy_available else _nullcontextmanager
+        _snapshot_queries_django if django_available else _nullcontextmanager
     )
 
     with snapshot_queries_sqlalchemy(queries), snapshot_queries_django(queries):
-        yield
+        yield queries
 
 
 @contextmanager
@@ -164,7 +164,7 @@ def _snapshot_queries_django(queries: Queries):
 
     def new_cursor(conn):
         def inner(*args, **kwargs):
-            return _DebugQueriesCursorWrapper(
+            return SnapshotQueriesDjangoCursorWrapper(
                 initial_cursors[conn.alias](*args, **kwargs), queries
             )
 
@@ -172,7 +172,7 @@ def _snapshot_queries_django(queries: Queries):
 
     def new_chunked_cursor(conn):
         def inner(*args, **kwargs):
-            return _DebugQueriesCursorWrapper(
+            return SnapshotQueriesDjangoCursorWrapper(
                 initial_chunked_cursors[conn.alias](*args, **kwargs),
                 queries,
             )
@@ -190,7 +190,18 @@ def _snapshot_queries_django(queries: Queries):
 
     yield
 
-class _DebugQueriesCursorWrapper:
+    for alias in connections:
+        connection = connections[alias]
+        connection.cursor = initial_cursors[alias]
+        connection.chunked_cursor = initial_chunked_cursors[alias]
+
+
+@contextmanager
+def _nullcontextmanager(*args, **kwargs):
+    yield
+
+
+class SnapshotQueriesDjangoCursorWrapper:
     def __init__(self, cursor, queries: Queries):
         self.cursor = cursor
         self._queries = queries
@@ -292,9 +303,5 @@ class _DebugQueriesCursorWrapper:
             )
         return results
 
-
-@contextmanager
-def _nullcontextmanager(*args, **kwargs):
-    yield
 
 SnapshotQueries = snapshot_queries
