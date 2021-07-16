@@ -120,7 +120,7 @@ class Query:
     @property
     def _last_executed_line(self) -> StacktraceLine:
         last_executed_line: StacktraceLine = (
-            self.stacktrace[-1] if self.stacktrace else ""
+            self.stacktrace[-1] if self.stacktrace else StacktraceLine.null()
         )
         return last_executed_line
 
