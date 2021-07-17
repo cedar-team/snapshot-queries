@@ -1,3 +1,3 @@
-from .snapshot_queries import SnapshotQueries
+from .snapshot_queries import snapshot_queries
 
-__all__ = ["SnapshotQueries"]
+__all__ = ["snapshot_queries"]

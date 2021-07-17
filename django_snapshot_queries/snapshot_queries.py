@@ -164,7 +164,7 @@ def _snapshot_queries_django(queries: Queries):
 
     def new_cursor(conn):
         def inner(*args, **kwargs):
-            return SnapshotQueriesDjangoCursorWrapper(
+            return _SnapshotQueriesDjangoCursorWrapper(
                 initial_cursors[conn.alias](*args, **kwargs), queries
             )
 
@@ -172,7 +172,7 @@ def _snapshot_queries_django(queries: Queries):
 
     def new_chunked_cursor(conn):
         def inner(*args, **kwargs):
-            return SnapshotQueriesDjangoCursorWrapper(
+            return _SnapshotQueriesDjangoCursorWrapper(
                 initial_chunked_cursors[conn.alias](*args, **kwargs),
                 queries,
             )
@@ -201,7 +201,7 @@ def _nullcontextmanager(*args, **kwargs):
     yield
 
 
-class SnapshotQueriesDjangoCursorWrapper:
+class _SnapshotQueriesDjangoCursorWrapper:
     def __init__(self, cursor, queries: Queries):
         self.cursor = cursor
         self._queries = queries
@@ -304,4 +304,3 @@ class SnapshotQueriesDjangoCursorWrapper:
         return results
 
 
-SnapshotQueries = snapshot_queries
