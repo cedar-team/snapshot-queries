@@ -1,13 +1,11 @@
 import datetime
 import json
-
-
-from .timedelta import TimeDelta
+from contextlib import contextmanager
 
 from .queries import Queries
 from .query import Query
 from .stacktrace import StackTrace
-from contextlib import contextmanager
+from .timedelta import TimeDelta
 
 try:
     from freezegun.api import real_time
