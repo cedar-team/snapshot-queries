@@ -1,8 +1,6 @@
 import datetime
 import json
 
-from django.db import connections
-from django.utils.encoding import force_text
 
 from .timedelta import TimeDelta
 
@@ -19,13 +17,10 @@ except ImportError:
 sql_alchemy_available = False
 try:
     import sqlalchemy
-
-    sql_alchemy_available = True
 except ImportError:
     pass
 else:
-    from sqlalchemy import event
-    from sqlalchemy.engine import Engine
+    sql_alchemy_available = True
 
 
 django_available = False
@@ -34,9 +29,6 @@ try:
 except ImportError:
     pass
 else:
-    from django.db import connections
-    from django.utils.encoding import force_text
-
     django_available = True
 
 
@@ -98,13 +90,13 @@ def snapshot_queries():
 
 @contextmanager
 def _snapshot_queries_sqlalchemy(queries: Queries):
-    @event.listens_for(Engine, "before_cursor_execute")
+    @sqlalchemy.event.listens_for(sqlalchemy.engine.Engine, "before_cursor_execute")
     def sqlalchemy_before_cursor_execute(
         conn, cursor, statement, parameters, context, executemany
     ):
         conn.info.setdefault("query_start_time", []).append(real_time())
 
-    @event.listens_for(Engine, "after_cursor_execute")
+    @sqlalchemy.event.listens_for(sqlalchemy.engine.Engine, "after_cursor_execute")
     def sqlalchemy_after_cursor_execute(
         conn, cursor, statement, parameters, context, executemany
     ):
@@ -130,31 +122,20 @@ def _snapshot_queries_sqlalchemy(queries: Queries):
             )
         )
 
-    event.remove(
-        Engine,
-        "before_cursor_execute",
-        sqlalchemy_before_cursor_execute,
-    )
+    try:
+        yield
+    finally:
+        sqlalchemy.event.remove(
+            sqlalchemy.engine.Engine,
+            "before_cursor_execute",
+            sqlalchemy_before_cursor_execute,
+        )
 
-    event.remove(
-        Engine,
-        "after_cursor_execute",
-        sqlalchemy_after_cursor_execute,
-    )
-
-    yield
-
-    event.remove(
-        Engine,
-        "before_cursor_execute",
-        sqlalchemy_before_cursor_execute,
-    )
-
-    event.remove(
-        Engine,
-        "after_cursor_execute",
-        sqlalchemy_after_cursor_execute,
-    )
+        sqlalchemy.event.remove(
+            sqlalchemy.engine.Engine,
+            "after_cursor_execute",
+            sqlalchemy_after_cursor_execute,
+        )
 
 
 @contextmanager
@@ -179,8 +160,8 @@ def _snapshot_queries_django(queries: Queries):
 
         return inner
 
-    for alias in connections:
-        connection = connections[alias]
+    for alias in django.db.connections:
+        connection = django.db.connections[alias]
         initial_cursors[alias] = connection.cursor
         initial_chunked_cursors[alias] = connection.chunked_cursor
 
@@ -188,12 +169,13 @@ def _snapshot_queries_django(queries: Queries):
         connection.cursor = new_cursor(connection)
         connection.chunked_cursor = new_chunked_cursor(connection)
 
-    yield
-
-    for alias in connections:
-        connection = connections[alias]
-        connection.cursor = initial_cursors[alias]
-        connection.chunked_cursor = initial_chunked_cursors[alias]
+    try:
+        yield
+    finally:
+        for alias in django.db.connections:
+            connection = django.db.connections[alias]
+            connection.cursor = initial_cursors[alias]
+            connection.chunked_cursor = initial_chunked_cursors[alias]
 
 
 @contextmanager
@@ -239,7 +221,9 @@ class _SnapshotQueriesDjangoCursorWrapper:
         # make sure datetime, date and time are converted to string by force_text
         CONVERT_TYPES = (datetime.datetime, datetime.date, datetime.time)
         try:
-            return force_text(param, strings_only=not isinstance(param, CONVERT_TYPES))
+            return django.utils.encoding.force_text(
+                param, strings_only=not isinstance(param, CONVERT_TYPES)
+            )
         except UnicodeDecodeError:
             return "(encoded string)"
 
@@ -302,5 +286,3 @@ class _SnapshotQueriesDjangoCursorWrapper:
                 )
             )
         return results
-
-
