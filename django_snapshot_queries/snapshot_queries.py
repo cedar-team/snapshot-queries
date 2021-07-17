@@ -34,46 +34,7 @@ else:
 
 @contextmanager
 def snapshot_queries():
-    """
-    Context Manager for debugging queries executed.
-
-    Usage:
-
-        from api_app.models import Provider, User
-        with snapshot_queries() as queries:
-            User.objects.only('protected_id').get(id=1)
-            User.objects.only('protected_id').get(id=1)
-            User.objects.only('protected_id').get(id=7)
-            Provider.objects.only('name').get(id=1)
-            Provider.objects.only('name').get(id=1)
-            Provider.objects.only('name').get(id=5)
-
-        # Display the queries that were executed
-        queries.display()
-
-        # Display the stacktrace, sql, and duration of each query
-        queries.display(stacktrace=True, sql=True, duration=True)
-
-        # Display only the sql
-        queries.display(sql=True)
-
-        # Display the code executed, the line number, and the sql of each query
-        queries.display(code=True, location=True, sql=True)
-
-        # Order queries by duration
-        fastest_queries = queries.order_by('duration')[:3]
-        slowest_queries = queries.order_by('-duration')[:3]
-
-        # Inspect a specific query
-        slowest_query = queries.order_by('-duration')[0]
-        slowest_query.display(code=True, location=True, sql=True)
-
-        # Display queries with identical sql statements together
-        duplicates = queries.duplicates().display()
-
-        # Display queries with similar sql statements
-        sim = queries.similar().display()
-    """
+    """Context Manager for debugging queries executed."""
     queries = Queries()
 
     snapshot_queries_sqlalchemy = (
