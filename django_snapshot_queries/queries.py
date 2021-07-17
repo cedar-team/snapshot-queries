@@ -127,12 +127,12 @@ class Queries(SliceableList):
 
     def similar(self) -> "SimilarQueries":
         """Return similar queries."""
-        queries = collections.defaultdict(Queries)
+        queries_by_sql: Dict[str, Queries] = collections.defaultdict(Queries)
         for query in self:
-            queries[query.sql_parameterized].append(query)
+            queries_by_sql[query.sql_parameterized].append(query)
 
         similar = SimilarQueries()
-        for sql, queries in queries.items():
+        for sql, queries in queries_by_sql.items():
             if len(queries) > 1:
                 similar[sql] = queries
 
@@ -190,7 +190,6 @@ class DuplicateQueries(UserDict):
         string = ""
         for queries in self.values():
 
-            queries: Queries
             string += (
                 f"\n\n============================\n"
                 f"{len(queries)} duplicate queries detected\n"
@@ -221,8 +220,6 @@ class SimilarQueries(DuplicateQueries):
     ) -> str:
         string = ""
         for queries in self.values():
-
-            queries: Queries
             string += (
                 f"\n\n==========================\n"
                 f"{len(queries)} similar queries detected\n"

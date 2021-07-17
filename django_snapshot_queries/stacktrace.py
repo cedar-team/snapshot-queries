@@ -9,10 +9,10 @@ from .sliceable_list import SliceableList
 
 class StackTrace(SliceableList):
     def __repr__(self) -> str:
-        return "[" + ",\n ".join([repr(l) for l in self]) + "]"
+        return "[" + ",\n ".join([repr(line) for line in self]) + "]"
 
     def __str__(self) -> str:
-        return "\n".join([str(l) for l in self])
+        return "\n".join([str(line) for line in self])
 
     EXCLUDED_MODULES = (
         "django_snapshot_queries",
