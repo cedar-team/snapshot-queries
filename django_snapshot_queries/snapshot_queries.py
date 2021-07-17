@@ -6,6 +6,7 @@ from .queries import Queries
 from .query import Query
 from .stacktrace import StackTrace
 from .timedelta import TimeDelta
+from typing import Dict, Callable
 
 try:
     from freezegun.api import real_time
@@ -99,8 +100,8 @@ def _snapshot_queries_sqlalchemy(queries: Queries):
 
 @contextmanager
 def _snapshot_queries_django(queries: Queries):
-    initial_cursors = dict()
-    initial_chunked_cursors = dict()
+    initial_cursors: Dict[str, Callable] = dict()
+    initial_chunked_cursors: Dict[str, Callable] = dict()
 
     def new_cursor(conn):
         def inner(*args, **kwargs):
