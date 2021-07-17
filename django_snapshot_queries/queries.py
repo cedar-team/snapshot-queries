@@ -1,6 +1,6 @@
 import collections
 import sys
-import typing
+from typing import Dict, Callable
 from collections import UserDict
 
 from .timedelta import TimeDelta
@@ -82,12 +82,12 @@ class Queries(SliceableList):
 
     def duplicates(self) -> "DuplicateQueries":
         """Return duplicate queries."""
-        queries = collections.defaultdict(Queries)
+        queries_by_sql: Dict[str, Queries] = collections.defaultdict(Queries)
         for query in self:
-            queries[query.sql].append(query)
+            queries_by_sql[query.sql].append(query)
 
         dupes = DuplicateQueries()
-        for sql, queries in queries.items():
+        for sql, queries in queries_by_sql.items():
             if len(queries) > 1:
                 dupes[sql] = queries
 
@@ -113,7 +113,7 @@ class Queries(SliceableList):
         """
         reverse = True if field.startswith("-") else False
 
-        keys: typing.Dict[str, typing.Callable] = dict(
+        keys: Dict[str, Callable] = dict(
             duration=self._order_by_duration_key,
             location=self._order_by_location_key,
             idx=self._order_by_idx_key,
