@@ -9,8 +9,7 @@ from pygments.lexers import PostgresLexer, Python3Lexer, SqlLexer
 
 from .timedelta import TimeDelta
 
-from .stacktrace import StackTrace
-from .stacktrace_line import StacktraceLine
+from .stacktrace import StackTrace, StacktraceLine
 
 
 @attr.s(auto_attribs=True, repr=False)

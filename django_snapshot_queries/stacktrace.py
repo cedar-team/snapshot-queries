@@ -1,10 +1,10 @@
+import attr
 import os
 import pkgutil
 import traceback
 import typing
 
 from .sliceable_list import SliceableList
-from .stacktrace_line import StacktraceLine
 
 
 class StackTrace(SliceableList):
@@ -42,21 +42,23 @@ class StackTrace(SliceableList):
 
         stacktrace = cls()
 
+        # Iterate through each line in the stacktrace.
+        # Skip lines of code that are from excluded modules.
         for frame in traceback.extract_stack():
-            path = frame.filename
-            line_no = frame.lineno
-            func_name = frame.name
-            text = frame.line
-
-            if any(path.startswith(excluded) for excluded in exclude_module_paths):
+            if any(
+                frame.filename.startswith(excluded) for excluded in exclude_module_paths
+            ):
                 continue
 
-            text = "".join(text).strip() if text else ""
             stacktrace.append(
                 StacktraceLine(
-                    path=frame.filename, line_no=line_no, func=func_name, code=text
+                    path=frame.filename,
+                    line_no=str(frame.lineno),
+                    func=frame.name,
+                    code="".join(frame.line or []).strip(),
                 )
             )
+
         return stacktrace
 
     @staticmethod
@@ -73,3 +75,22 @@ class StackTrace(SliceableList):
         if source_path.endswith("__init__.py"):
             source_path = os.path.dirname(source_path)
         return os.path.realpath(source_path)
+
+
+@attr.s(auto_attribs=True)
+class StacktraceLine:
+    path: str
+    line_no: str
+    func: str
+    code: str
+
+    def __str__(self) -> str:
+        return f"{self.location()}\n    {self.code}"
+
+    @classmethod
+    def null(cls) -> "StacktraceLine":
+        """Return the equivalent of an empty StacktraceLine."""
+        return cls(path="", line_no="", func="", code="")
+
+    def location(self) -> str:
+        return f"{self.path}:{self.line_no} in {self.func}"
