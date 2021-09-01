@@ -1,4 +1,4 @@
-# [DRAFT: Not released yet] django-snapshot-queries
+# [DRAFT: Not released yet] snapshot-queries
 Snapshot SQL in Django ORM queries. This is useful for viewing the underlying SQL that the
 Django ORM is executing. In addition, it's useful for performance. It makes N+1 queries and other query
 issues easy to identify. If added to a test, code reviewers can see the exact SQL that is added.
@@ -10,7 +10,7 @@ A contextmanager for debugging queries executed
 ## Display queries executed
 ```python
 from django.contrib.auth import get_user_model
-from django_snapshot_queries import snapshot_queries
+from snapshot_queries import snapshot_queries
 
 User = get_user_model()
 with snapshot_queries() as queries:
@@ -67,7 +67,7 @@ E.g. to display only the stacktrace and sql statements of each query, use `queri
 
 ```python
 from django.contrib.auth import get_user_model
-from django_snapshot_queries import snapshot_queries
+from snapshot_queries import snapshot_queries
 
 User = get_user_model()
 
@@ -126,7 +126,7 @@ slowest_query.display(code=True, location=True, sql=True)
 ### Group queries with duplicate sql statements together
 ```python
 from django.contrib.auth import get_user_model
-from django_snapshot_queries import snapshot_queries
+from snapshot_queries import snapshot_queries
 
 User = get_user_model()
 
@@ -191,7 +191,7 @@ WHERE "auth_user"."id" = 1
 ### Group queries with similar sql statements together
 ```python
 from django.contrib.auth import get_user_model
-from django_snapshot_queries import snapshot_queries
+from snapshot_queries import snapshot_queries
 
 User = get_user_model()
 

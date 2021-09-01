@@ -15,7 +15,7 @@ class StackTrace(SliceableList):
         return "\n".join([str(line) for line in self])
 
     EXCLUDED_MODULES = (
-        "django_snapshot_queries",
+        "snapshot_queries",
         "debug_toolbar",
         "django.core.management",
         "django.core.handlers",

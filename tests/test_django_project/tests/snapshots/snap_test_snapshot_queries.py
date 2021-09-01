@@ -9,7 +9,7 @@ snapshots = Snapshot()
 
 snapshots['SnapshotQueriesTest::test_multiple_queries_display_string 1'] = '''Query 1
 ---------
-< 1 ms
+1 ms
 
 /python/tests/test_django_project/tests/test_snapshot_queries.py:23 in test_multiple_queries_display_string
 
