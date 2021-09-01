@@ -4,7 +4,7 @@ services:
     build: .
     volumes:
       - .:/python
-    working_dir: /python
+    working_dir: /python/tests/test_django_project
     depends_on:
       - db
   db:

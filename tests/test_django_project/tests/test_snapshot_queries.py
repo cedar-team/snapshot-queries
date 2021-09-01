@@ -50,15 +50,3 @@ class SnapshotQueriesTest(TestCase):
         self.assertMatchSnapshot(
             queries.similar().display_string()
         )
-
-    def test_multiple_queries_similar(self):
-        with snapshot_queries() as queries:
-            # Use list to trigger query
-            # Second 2 should be similar, not the first because it's a different field
-            list(User.objects.only("id").filter(id=1))
-            list(User.objects.only("email").filter(id=1))
-            list(User.objects.only("email").filter(id=2))
-
-        self.assertMatchSnapshot(
-            queries.similar().display_string()
-        )

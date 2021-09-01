@@ -54,7 +54,7 @@ MIGRATION_MODULES = DisableMigrations()
 
 MIDDLEWARE = []
 
-ROOT_URLCONF = "tests.test_project.urls"
+ROOT_URLCONF = "settings.urls"
 
 TEMPLATES = [
     {
@@ -72,7 +72,7 @@ TEMPLATES = [
     }
 ]
 
-WSGI_APPLICATION = "tests.test_project.wsgi.application"
+WSGI_APPLICATION = "wsgi.application"
 
 
 DATABASES = {
