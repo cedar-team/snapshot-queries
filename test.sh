@@ -1,4 +1,9 @@
 #!/usr/bin/env bash
+# -e: if any command fails exit immediately
+# -u: fail if undefined variable is used
+# -o pipefail: return value of a pipeline is the return value of the rightmost command
+set -euo pipefail
+
 print_in_cyan() {
     printf "\x1B[36m%b\x1B[0m\n" "$*"
 }
