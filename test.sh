@@ -11,5 +11,6 @@ print_in_cyan() {
 for PYTHON_VERSION in 3.6  3.7  3.8  3.9
 do
     print_in_cyan "\nTesting Python $PYTHON_VERSION"
-    PYTHON_VERSION=$PYTHON_VERSION docker-compose run --rm  test ./test.sh
+    PYTHON_VERSION=$PYTHON_VERSION docker-compose up --build test-django
+    PYTHON_VERSION=$PYTHON_VERSION docker-compose up --build test-sqlalchemy
 done

@@ -1,14 +1,30 @@
 version: '3'
 services:
-  test:
-    image: snapshot-queries-py-${PYTHON_VERSION:-3.9}
+  test-django:
+    image: snapshot-queries-django-tests-${PYTHON_VERSION:-3.9}
+    command: tests/test_django/test.sh --snapshot-update
     build:
       context: .
+      target: django
       args:
         PYTHON_VERSION: ${PYTHON_VERSION:-3.9}
     volumes:
       - .:/python
-    working_dir: /python/tests/test_django
+    working_dir: /python
+    depends_on:
+      - db
+
+  test-sqlalchemy:
+    image: snapshot-queries-sqlalchemy-tests-${PYTHON_VERSION:-3.9}
+    command: tests/test_sqlalchemy/test.sh --snapshot-update
+    build:
+      context: .
+      target: sqlalchemy
+      args:
+        PYTHON_VERSION: ${PYTHON_VERSION:-3.9}
+    volumes:
+      - .:/python
+    working_dir: /python
     depends_on:
       - db
 
