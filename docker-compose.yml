@@ -8,9 +8,10 @@ services:
         PYTHON_VERSION: ${PYTHON_VERSION:-3.9}
     volumes:
       - .:/python
-    working_dir: /python/tests/test_django_project
+    working_dir: /python/tests/test_django
     depends_on:
       - db
+
   db:
     image: postgres:10
     environment:
