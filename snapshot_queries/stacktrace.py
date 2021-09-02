@@ -64,7 +64,6 @@ class StackTrace(SliceableList):
     @staticmethod
     def _get_module_path(module_name) -> typing.Optional[str]:
         try:
-            print(module_name)
             package = pkgutil.get_loader(module_name)
         except ImportError:
             return None
