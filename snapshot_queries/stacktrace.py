@@ -17,15 +17,10 @@ class StackTrace(SliceableList):
     EXCLUDED_MODULES = (
         "snapshot_queries",
         "debug_toolbar",
-        "django.core.management",
-        "django.core.handlers",
-        "django.core.servers",
-        "django.db",
-        "django.utils.decorators",
-        "django.utils.deprecation",
-        "django.utils.functional",
+        "django",
         "IPython",
         "threading",
+        "sqlalchemy",
     )
 
     @classmethod

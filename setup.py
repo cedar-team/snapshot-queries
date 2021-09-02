@@ -23,17 +23,8 @@ setuptools.setup(
     ],
     packages=setuptools.find_packages(),
     python_requires=">=3.6",
-    install_requires=[
-        "sqlparse>=0.4.1",
-        "attrs>=20.3.0",
-        "pygments>=2.8.1"
-    ],
+    install_requires=["sqlparse>=0.4.1", "attrs>=20.3.0", "pygments>=2.8.1"],
     extras_require={
-        'test': [
-            "django>=2.2",
-            "sqlalchemy>=1",
-            "snapshottest==0.5.1",
-            "psycopg2-binary==2.8.6"
-        ]
+        "test": ["snapshottest==0.5.1", "psycopg2-binary==2.8.6", "nose", "tox"]
     },
 )

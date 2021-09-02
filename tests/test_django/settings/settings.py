@@ -16,7 +16,7 @@ import os
 from collections import OrderedDict
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-TEST_RUNNER = 'snapshottest.django.TestRunner'
+TEST_RUNNER = "snapshottest.django.TestRunner"
 
 
 # Quick-start development settings - unsuitable for production
@@ -76,10 +76,7 @@ WSGI_APPLICATION = "wsgi.application"
 
 
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-       "NAME": f"/tmp/db.sqlite3"
-    },
+    "default": {"ENGINE": "django.db.backends.sqlite3", "NAME": f"/tmp/db.sqlite3"},
 }
 
 

@@ -1,14 +1,13 @@
 import datetime
 import json
+import logging
 from contextlib import contextmanager
-import datetime
-from decimal import Decimal
+from typing import Callable, Dict
 
 from .queries import Queries
 from .query import Query
 from .stacktrace import StackTrace
 from .timedelta import TimeDelta
-from typing import Dict, Callable
 
 try:
     from freezegun.api import real_time
@@ -27,12 +26,15 @@ else:
 
 django_available = False
 try:
-    import django.db
     import django.conf
+    import django.db
 except ImportError:
     pass
 else:
     django_available = True
+
+
+logger = logging.getLogger(__name__)
 
 
 @contextmanager
@@ -79,7 +81,7 @@ def _snapshot_queries_sqlalchemy(queries: Queries):
             try:
                 sql = statement % parameters
             except TypeError:
-                pass
+                logger.error("Failed to render sql statement")
 
         stacktrace = StackTrace.load()
 
@@ -87,7 +89,7 @@ def _snapshot_queries_sqlalchemy(queries: Queries):
             Query(
                 idx=len(queries),
                 db_type=conn.engine.name,
-                db="",  # TODO: Figure out if it's possible to get the db name
+                db="",
                 sql=sql,
                 sql_parameterized=statement,
                 duration=TimeDelta(seconds=(stop_time - start_time)),

@@ -11,7 +11,7 @@ snapshots['SnapshotQueriesTest::test_multiple_queries_display_string 1'] = '''Qu
 ---------
 < 1 ms
 
-/python/tests/test_django/tests/test_snapshot_queries.py:23 in test_multiple_queries_display_string
+/python/tests/test_django/tests/test_snapshot_queries.py:21 in test_multiple_queries_display_string
 
 \x1b[36mlist\x1b[39;49;00m(User.objects.only(\x1b[33m"\x1b[39;49;00m\x1b[33mid\x1b[39;49;00m\x1b[33m"\x1b[39;49;00m).filter(\x1b[36mid\x1b[39;49;00m=\x1b[34m2\x1b[39;49;00m))
 
@@ -24,7 +24,7 @@ Query 2
 ---------
 < 1 ms
 
-/python/tests/test_django/tests/test_snapshot_queries.py:24 in test_multiple_queries_display_string
+/python/tests/test_django/tests/test_snapshot_queries.py:22 in test_multiple_queries_display_string
 
 \x1b[36mlist\x1b[39;49;00m(User.objects.only(\x1b[33m"\x1b[39;49;00m\x1b[33memail\x1b[39;49;00m\x1b[33m"\x1b[39;49;00m).filter(\x1b[36mid\x1b[39;49;00m=\x1b[34m1\x1b[39;49;00m))
 
@@ -42,7 +42,7 @@ Query 1
 ---------
 < 1 ms
 
-/python/tests/test_django/tests/test_snapshot_queries.py:34 in test_multiple_queries_duplicates
+/python/tests/test_django/tests/test_snapshot_queries.py:30 in test_multiple_queries_duplicates
 
 \x1b[36mlist\x1b[39;49;00m(User.objects.only(\x1b[33m"\x1b[39;49;00m\x1b[33mid\x1b[39;49;00m\x1b[33m"\x1b[39;49;00m).filter(\x1b[36mid\x1b[39;49;00m=\x1b[34m1\x1b[39;49;00m))
 
@@ -55,7 +55,7 @@ Query 2
 ---------
 < 1 ms
 
-/python/tests/test_django/tests/test_snapshot_queries.py:35 in test_multiple_queries_duplicates
+/python/tests/test_django/tests/test_snapshot_queries.py:31 in test_multiple_queries_duplicates
 
 \x1b[36mlist\x1b[39;49;00m(User.objects.only(\x1b[33m"\x1b[39;49;00m\x1b[33mid\x1b[39;49;00m\x1b[33m"\x1b[39;49;00m).filter(\x1b[36mid\x1b[39;49;00m=\x1b[34m1\x1b[39;49;00m))
 
@@ -72,7 +72,7 @@ Query 1
 ---------
 < 1 ms
 
-/python/tests/test_django/tests/test_snapshot_queries.py:47 in test_multiple_queries_similar
+/python/tests/test_django/tests/test_snapshot_queries.py:41 in test_multiple_queries_similar
 
 \x1b[36mlist\x1b[39;49;00m(User.objects.only(\x1b[33m"\x1b[39;49;00m\x1b[33memail\x1b[39;49;00m\x1b[33m"\x1b[39;49;00m).filter(\x1b[36mid\x1b[39;49;00m=\x1b[34m1\x1b[39;49;00m))
 
@@ -86,7 +86,7 @@ Query 2
 ---------
 < 1 ms
 
-/python/tests/test_django/tests/test_snapshot_queries.py:48 in test_multiple_queries_similar
+/python/tests/test_django/tests/test_snapshot_queries.py:42 in test_multiple_queries_similar
 
 \x1b[36mlist\x1b[39;49;00m(User.objects.only(\x1b[33m"\x1b[39;49;00m\x1b[33memail\x1b[39;49;00m\x1b[33m"\x1b[39;49;00m).filter(\x1b[36mid\x1b[39;49;00m=\x1b[34m2\x1b[39;49;00m))
 
