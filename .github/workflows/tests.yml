@@ -16,4 +16,4 @@ jobs:
 
     - name: Run Tests
       run: |
-        ./tests.sh
+        ./test.sh
