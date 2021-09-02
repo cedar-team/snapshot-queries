@@ -12,7 +12,7 @@ services:
       - .:/python
     working_dir: /python
     depends_on:
-      - db
+      - postgres-db
 
   test-sqlalchemy:
     image: snapshot-queries-sqlalchemy-tests-${PYTHON_VERSION:-3.9}
@@ -26,9 +26,9 @@ services:
       - .:/python
     working_dir: /python
     depends_on:
-      - db
+      - postgres-db
 
-  db:
+  postgres-db:
     image: postgres:10
     environment:
       - POSTGRES_PASSWORD=postgres

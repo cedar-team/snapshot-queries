@@ -5,20 +5,24 @@ from pathlib import Path
 from datetime import date
 
 
-class TestSQLite(TestCase):
+class TestPostgres(TestCase):
     maxDiff = None
 
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
 
-        db_file = Path("/tmp/college.db")
-        if db_file.exists():
-            db_file.unlink()
-
-        cls.engine = create_engine(f"sqlite:///{db_file}")
+        cls.engine = create_engine(f"postgresql+psycopg2://postgres:postgres@postgres-db/postgres")
 
         meta = MetaData()
+
+        conn = cls.engine.connect()
+        trans = conn.begin()
+        for table in meta.sorted_tables:
+            conn.execute(table.delete())
+        trans.commit()
+
+        cls.tables = []
 
         cls.students = Table(
             "students",
@@ -27,6 +31,7 @@ class TestSQLite(TestCase):
             Column("first_name", String),
             Column("last_name", String),
         )
+        cls.tables.append(cls.students)
 
         cls.classes = Table(
             "classes",
@@ -35,8 +40,16 @@ class TestSQLite(TestCase):
             Column("name", String),
             Column("start_date", Date),
         )
+        cls.tables.append(cls.classes)
+
 
         meta.create_all(cls.engine)
+
+    def setUp(self):
+        # Truncate the tables
+        with self.engine.connect() as conn:
+            for table in self.tables:
+                conn.execute(table.delete())
 
     def test_executing_queries(self):
         with snapshot_queries() as queries:
@@ -56,4 +69,5 @@ class TestSQLite(TestCase):
                 conn.execute(self.students.select())
                 conn.execute(self.classes.select())
 
+        import ipdb; ipdb.set_trace()
         self.assertMatchSnapshot(queries.display_string())
