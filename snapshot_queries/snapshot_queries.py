@@ -86,7 +86,7 @@ def _snapshot_queries_sqlalchemy(queries: Queries):
         )
 
     try:
-        yield
+        yield queries
     finally:
         sqlalchemy.event.remove(
             sqlalchemy.engine.Engine,
