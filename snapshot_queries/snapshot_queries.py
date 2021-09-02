@@ -24,7 +24,8 @@ else:
 
 django_available = False
 try:
-    import django
+    import django.db
+    import django.conf
 except ImportError:
     pass
 else:
@@ -41,7 +42,9 @@ def snapshot_queries():
     )
 
     snapshot_queries_django = (
-        _snapshot_queries_django if django_available else _nullcontextmanager
+        _snapshot_queries_django
+        if (django_available and django.conf.settings.configured)
+        else _nullcontextmanager
     )
 
     with snapshot_queries_sqlalchemy(queries), snapshot_queries_django(queries):
