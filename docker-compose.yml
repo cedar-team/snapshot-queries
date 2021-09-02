@@ -1,7 +1,10 @@
 version: '3'
 services:
   test:
-    build: .
+    build:
+      context: .
+      args:
+        PYTHON_VERSION: ${PYTHON_VERSION:-3.9}
     volumes:
       - .:/python
     working_dir: /python/tests/test_django_project
