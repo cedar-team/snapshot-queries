@@ -1,6 +1,8 @@
 import datetime
 import json
 from contextlib import contextmanager
+import datetime
+from decimal import Decimal
 
 from .queries import Queries
 from .query import Query
@@ -16,6 +18,7 @@ except ImportError:
 sql_alchemy_available = False
 try:
     import sqlalchemy
+    import sqlalchemy.sql
 except ImportError:
     pass
 else:
@@ -61,11 +64,23 @@ def _snapshot_queries_sqlalchemy(queries: Queries):
 
     @sqlalchemy.event.listens_for(sqlalchemy.engine.Engine, "after_cursor_execute")
     def sqlalchemy_after_cursor_execute(
-        conn, cursor, statement, parameters, context, executemany
+        conn, cursor, statement: str, parameters, context, executemany
     ):
         start_time = conn.info["query_start_time"].pop()
         stop_time = real_time()
-        sql = statement % parameters
+
+        # TODO: Support paramstyles 'numeric' and 'named'
+        sql = statement
+        paramstyle = conn.dialect.paramstyle
+        if paramstyle == "qmark":
+            for param in parameters:
+                sql = sql.replace("?", repr(param), 1)
+        elif paramstyle in ("format", "pyformat"):
+            try:
+                sql = statement % parameters
+            except TypeError:
+                pass
+
         stacktrace = StackTrace.load()
 
         queries.append(
