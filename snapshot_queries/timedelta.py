@@ -41,6 +41,3 @@ class TimeDelta(datetime.timedelta):
     def total_minutes(self) -> float:
         return self.total_seconds() / 60
 
-
-def humanize(delta: datetime.timedelta):
-    return TimeDelta.from_python_timedelta(delta).humanize()
