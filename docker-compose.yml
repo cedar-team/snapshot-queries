@@ -2,7 +2,6 @@ version: '3'
 services:
   test-django:
     image: snapshot-queries-django-tests-${PYTHON_VERSION:-3.9}
-    command: tests/test_django/test.sh --snapshot-update
     build:
       context: .
       target: django
@@ -16,7 +15,6 @@ services:
 
   test-sqlalchemy:
     image: snapshot-queries-sqlalchemy-tests-${PYTHON_VERSION:-3.9}
-    command: tests/test_sqlalchemy/test.sh --snapshot-update
     build:
       context: .
       target: sqlalchemy

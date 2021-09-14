@@ -11,6 +11,7 @@ print_in_cyan() {
 PYTHON_VERSIONS="3.6  3.7  3.8  3.9"
 TEST_SQLALCHEMY=true
 TEST_DJANGO=true
+SNAPSHOT_UPDATE="--snapshot-update"
 
 for i in "$@"; do
   case $i in
@@ -26,6 +27,9 @@ for i in "$@"; do
       TEST_DJANGO=false
       shift
       ;;
+    --no-snapshot-update)
+      SNAPSHOT_UPDATE=""
+      ;;
     *)
       # unknown option
       ;;
@@ -35,12 +39,15 @@ done
 for PYTHON_VERSION in $PYTHON_VERSIONS
 do
     print_in_cyan "\nTesting Python $PYTHON_VERSION"
+    export PYTHON_VERSION=$PYTHON_VERSION
 
     if [ "$TEST_DJANGO" = true ]; then
-        PYTHON_VERSION=$PYTHON_VERSION docker-compose up --build test-django
+        docker-compose build test-django
+        docker-compose run --rm test-django tests/test_django/test.sh $SNAPSHOT_UPDATE
     fi
 
     if [ "$TEST_SQLALCHEMY" = true ]; then
-        PYTHON_VERSION=$PYTHON_VERSION docker-compose up --build test-sqlalchemy
+        docker-compose build test-sqlalchemy
+        docker-compose run --rm test-sqlalchemy tests/test_sqlalchemy/test.sh $SNAPSHOT_UPDATE
     fi
 done

@@ -16,4 +16,4 @@ jobs:
 
     - name: Run Tests
       run: |
-        ./test.sh
+        ./test.sh --no-snapshot-update
