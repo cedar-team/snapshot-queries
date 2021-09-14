@@ -1,6 +1,6 @@
 # snapshot-queries
 
-Snapshot SQL executed via Django and SqlAlchemy ORM queries
+Capture all SQL statements executed via Django and SqlAlchemy ORM queries
 
 Use cases
 
