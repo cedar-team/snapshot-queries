@@ -14,7 +14,7 @@ Examples
 - [Display queries executed](#display-queries-executed)
 - [Display specific attributes of each query](#display-specific-attributes-of-each-query)
 - [Order queries by duration](#order-queries-by-duration)
-- [Inspect a specific query](#inspect-a-specific-query)
+- [Inspect the slowest query](#inspect-the-slowest-query)
 - [Group queries with duplicate sql statements together](#group-queries-with-duplicate-sql-statements-together)
 - [Group queries with similar sql statements together](#group-queries-with-similar-sql-statements-together)
 
@@ -131,7 +131,7 @@ slowest_queries = queries.order_by('-duration')[:3]
 slowest_queries.display()
 ```
 
-## Inspect a specific query
+## Inspect the slowest query
 ```python
 slowest_query = queries.order_by('-duration')[0]
 slowest_query.display(code=True, location=True, sql=True)
