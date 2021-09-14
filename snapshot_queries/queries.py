@@ -10,7 +10,7 @@ from .sliceable_list import SliceableList
 
 
 class Queries(SliceableList):
-    """List Query instances."""
+    """List of Query instances."""
 
     def __str__(self):
         return self.display_string()

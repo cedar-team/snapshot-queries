@@ -14,6 +14,8 @@ from .stacktrace import StackTrace, StacktraceLine
 
 @attr.s(auto_attribs=True, repr=False)
 class Query:
+    """Executed query."""
+
     code: str
     db: str
     duration: TimeDelta
@@ -28,7 +30,6 @@ class Query:
     start_time: int
     stop_time: int
     db_type: str
-    """Executed query."""
 
     def __repr__(self) -> str:
         truncated_sql = repr(self.sql)[:30].strip("'")
@@ -151,18 +152,17 @@ class Query:
         return "\n\n".join(attributes).rstrip()
 
     def _enhanced_sql(self, *, formatted: bool, colored: bool) -> str:
-        lexer = SqlLexer()
-
-        # TODO: Handle other db_types?
-        if self.db_type.lower() == "postgresql":
-            lexer = PostgresLexer()
-
         sql = self.sql
 
         if formatted:
             sql = sqlparse.format(self.sql, reindent=True)
 
         if colored:
+            lexer = SqlLexer()
+            # TODO: Handle other db_types?
+            if self.db_type.lower() == "postgresql":
+                lexer = PostgresLexer()
+
             sql = highlight(f"{sql}", lexer, TerminalFormatter())
 
         return sql
