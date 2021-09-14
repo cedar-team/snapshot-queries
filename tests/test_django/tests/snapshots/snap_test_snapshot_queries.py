@@ -13,7 +13,9 @@ snapshots['SnapshotQueriesTest::test_multiple_queries_display_string 1'] = '''Qu
 
 list(User.objects.only("id").filter(id=2))
 
-SELECT "auth_user"."id" FROM "auth_user" WHERE "auth_user"."id" = \'2\'
+SELECT "auth_user"."id"
+FROM "auth_user"
+WHERE "auth_user"."id" = \'2\'
 
 
 Query 2
@@ -22,7 +24,10 @@ Query 2
 
 list(User.objects.only("email").filter(id=1))
 
-SELECT "auth_user"."id", "auth_user"."email" FROM "auth_user" WHERE "auth_user"."id" = \'1\''''
+SELECT "auth_user"."id",
+       "auth_user"."email"
+FROM "auth_user"
+WHERE "auth_user"."id" = \'1\''''
 
 snapshots['SnapshotQueriesTest::test_single_query_display_string 1'] = '''Query 1
 ---------
@@ -30,7 +35,10 @@ snapshots['SnapshotQueriesTest::test_single_query_display_string 1'] = '''Query 
 
 list(User.objects.only("email").filter(id=1))
 
-SELECT "auth_user"."id", "auth_user"."email" FROM "auth_user" WHERE "auth_user"."id" = \'1\''''
+SELECT "auth_user"."id",
+       "auth_user"."email"
+FROM "auth_user"
+WHERE "auth_user"."id" = \'1\''''
 
 snapshots['SnapshotQueriesTest::test_multiple_queries_duplicates 1'] = '''
 
@@ -43,7 +51,9 @@ Query 1
 
 list(User.objects.only("id").filter(id=1))
 
-SELECT "auth_user"."id" FROM "auth_user" WHERE "auth_user"."id" = \'1\'
+SELECT "auth_user"."id"
+FROM "auth_user"
+WHERE "auth_user"."id" = \'1\'
 
 
 Query 2
@@ -52,7 +62,9 @@ Query 2
 
 list(User.objects.only("id").filter(id=1))
 
-SELECT "auth_user"."id" FROM "auth_user" WHERE "auth_user"."id" = \'1\''''
+SELECT "auth_user"."id"
+FROM "auth_user"
+WHERE "auth_user"."id" = \'1\''''
 
 snapshots['SnapshotQueriesTest::test_multiple_queries_similar 1'] = '''
 
@@ -65,7 +77,10 @@ Query 1
 
 list(User.objects.only("email").filter(id=1))
 
-SELECT "auth_user"."id", "auth_user"."email" FROM "auth_user" WHERE "auth_user"."id" = \'1\'
+SELECT "auth_user"."id",
+       "auth_user"."email"
+FROM "auth_user"
+WHERE "auth_user"."id" = \'1\'
 
 
 Query 2
@@ -74,4 +89,7 @@ Query 2
 
 list(User.objects.only("email").filter(id=2))
 
-SELECT "auth_user"."id", "auth_user"."email" FROM "auth_user" WHERE "auth_user"."id" = \'2\''''
+SELECT "auth_user"."id",
+       "auth_user"."email"
+FROM "auth_user"
+WHERE "auth_user"."id" = \'2\''''

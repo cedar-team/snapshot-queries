@@ -140,11 +140,7 @@ class Query:
             attributes.append(str(self.stacktrace))
 
         if sql:
-            attributes.append(
-                self._enhanced_sql(colored=colored, formatted=formatted)
-                if colored
-                else self.sql
-            )
+            attributes.append(self._enhanced_sql(colored=colored, formatted=formatted))
 
         attributes = [c.strip() for c in attributes]
         return "\n\n".join(attributes).rstrip()

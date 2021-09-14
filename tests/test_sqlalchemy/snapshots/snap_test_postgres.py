@@ -13,7 +13,8 @@ snapshots['TestPostgres::test_executing_queries 1'] = '''Query 1
 
 id=1, first_name="Juan", last_name="Gonzalez"
 
-INSERT INTO students (id, first_name, last_name) VALUES (1, Juan, Gonzalez)
+INSERT INTO students (id, first_name, last_name)
+VALUES (1, Juan, Gonzalez)
 
 
 Query 2
@@ -22,7 +23,8 @@ Query 2
 
 id=1, name="Computer Science 101", start_date=date(2020, 1, 1)
 
-INSERT INTO classes (id, name, start_date) VALUES (1, Computer Science 101, 2020-01-01)
+INSERT INTO classes (id, name, start_date)
+VALUES (1, Computer Science 101, 2020-01-01)
 
 
 Query 3
@@ -31,7 +33,9 @@ Query 3
 
 conn.execute(self.students.select())
 
-SELECT students.id, students.first_name, students.last_name 
+SELECT students.id,
+       students.first_name,
+       students.last_name
 FROM students
 
 
@@ -41,5 +45,7 @@ Query 4
 
 conn.execute(self.classes.select())
 
-SELECT classes.id, classes.name, classes.start_date 
+SELECT classes.id,
+       classes.name,
+       classes.start_date
 FROM classes'''
