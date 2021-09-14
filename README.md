@@ -124,7 +124,7 @@ WHERE "auth_user"."id" = 7
 
 ```
 
-##h# Order queries by duration
+## Order queries by duration
 ```python
 fastest_queries = queries.order_by('duration')[:3]
 slowest_queries = queries.order_by('-duration')[:3]
