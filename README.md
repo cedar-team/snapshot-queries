@@ -62,8 +62,10 @@ Supported attributes to display:
 - **location**  (the location in our code where the query was executed)
 - **stacktrace** (the full stacktrace for each query)
 - **sql** (the sql statement of the query)
+- **colored** (display the sql statement colored)
+- **formatted** (display the sql statement formatted)
 
-E.g. to display only the stacktrace and sql statements of each query, use `queries.display(stacktrace=True, sql=True)`:
+E.g. to display stacktrace for each query, use `queries.display(stacktrace=True)`:
 
 ```python
 from django.contrib.auth import get_user_model

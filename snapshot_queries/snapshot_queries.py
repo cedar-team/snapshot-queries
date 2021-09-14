@@ -86,7 +86,7 @@ def _snapshot_queries_sqlalchemy(queries: Queries):
         stacktrace = StackTrace.load()
 
         queries.append(
-            Query(
+            Query.create(
                 idx=len(queries),
                 db_type=conn.engine.name,
                 db="",
@@ -250,7 +250,7 @@ class _SnapshotQueriesDjangoCursorWrapper:
             )
 
             self._queries.append(
-                Query(
+                Query.create(
                     idx=len(self._queries),
                     db_type=db_type,
                     db=db,

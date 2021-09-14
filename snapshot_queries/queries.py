@@ -101,8 +101,7 @@ class Queries(SliceableList):
 
         return dupes
 
-    @property
-    def duration(self) -> int:
+    def total_duration(self) -> int:
         """Return duration of queries."""
         return sum((q.duration for q in self), TimeDelta())
 

@@ -14,10 +14,12 @@ from .stacktrace import StackTrace, StacktraceLine
 
 @attr.s(auto_attribs=True, repr=False)
 class Query:
+    code: str
     db: str
     duration: TimeDelta
     idx: int
     is_select: bool
+    location: str
     params: str
     raw_params: typing.Tuple
     sql: str
@@ -42,9 +44,42 @@ class Query:
     def __str__(self) -> str:
         return self.display_string()
 
-    @property
-    def code(self) -> str:
-        return self._last_executed_line().code
+    @classmethod
+    def create(
+        cls,
+        db: str,
+        duration: TimeDelta,
+        idx: int,
+        is_select: bool,
+        params: str,
+        raw_params: typing.Tuple,
+        sql: str,
+        sql_parameterized: str,
+        stacktrace: StackTrace,
+        start_time: int,
+        stop_time: int,
+        db_type: str,
+    ) -> "Query":
+        last_executed_line: StacktraceLine = (
+            stacktrace[-1] if stacktrace else StacktraceLine.null()
+        )
+
+        return cls(
+            code=last_executed_line.code,
+            db=db,
+            duration=duration,
+            idx=idx,
+            is_select=is_select,
+            location=last_executed_line.location(),
+            params=params,
+            raw_params=raw_params,
+            sql=sql,
+            sql_parameterized=sql_parameterized,
+            stacktrace=stacktrace,
+            start_time=start_time,
+            stop_time=stop_time,
+            db_type=db_type,
+        )
 
     def display(
         self,
@@ -56,7 +91,7 @@ class Query:
         stacktrace: bool = False,
         sql=True,
         colored=True,
-        formatted=True
+        formatted=True,
     ):
         sys.stdout.write(
             self.display_string(
@@ -67,7 +102,7 @@ class Query:
                 sql=sql,
                 stacktrace=stacktrace,
                 colored=colored,
-                formatted=formatted
+                formatted=formatted,
             )
             + "\n"
         )
@@ -96,34 +131,26 @@ class Query:
             attributes.append(self.location)
 
         if code:
-            attributes.append(self._formatted_code() if colored else self.code)
+            attributes.append(
+                highlight(f"{self.code}", Python3Lexer(), TerminalFormatter())
+                if (colored and formatted)
+                else self.code
+            )
 
         if stacktrace:
             attributes.append(str(self.stacktrace))
 
         if sql:
-            attributes.append(self._colored_sql_str(colored=colored, formatted=formatted) if colored else self.sql)
+            attributes.append(
+                self._enhanced_sql(colored=colored, formatted=formatted)
+                if colored
+                else self.sql
+            )
 
         attributes = [c.strip() for c in attributes]
         return "\n\n".join(attributes).rstrip()
 
-    @property
-    def location(self) -> str:
-        return self._last_executed_line().location()
-
-    def _formatted_code(self) -> str:
-        return highlight(f"{self.code}", Python3Lexer(), TerminalFormatter())
-
-    def _formatted_sql(self) -> str:
-        return
-
-    def _last_executed_line(self) -> StacktraceLine:
-        last_executed_line: StacktraceLine = (
-            self.stacktrace[-1] if self.stacktrace else StacktraceLine.null()
-        )
-        return last_executed_line
-
-    def _colored_sql_str(self, *, formatted: bool, colored: bool) -> str:
+    def _enhanced_sql(self, *, formatted: bool, colored: bool) -> str:
         lexer = SqlLexer()
 
         # TODO: Handle other db_types?
@@ -136,6 +163,6 @@ class Query:
             sql = sqlparse.format(self.sql, reindent=True)
 
         if colored:
-            sql = highlight(f"{self._formatted_sql()}", lexer, TerminalFormatter())
+            sql = highlight(f"{sql}", lexer, TerminalFormatter())
 
         return sql
