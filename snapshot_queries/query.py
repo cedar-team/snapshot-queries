@@ -44,7 +44,7 @@ class Query:
 
     @property
     def code(self) -> str:
-        return self._last_executed_line.code
+        return self._last_executed_line().code
 
     def display(
         self,
@@ -55,6 +55,7 @@ class Query:
         location: bool = True,
         stacktrace: bool = False,
         sql=True,
+        colored=True,
     ):
         sys.stdout.write(
             self.display_string(
@@ -64,6 +65,7 @@ class Query:
                 location=location,
                 sql=sql,
                 stacktrace=stacktrace,
+                colored=colored,
             )
             + "\n"
         )
@@ -77,6 +79,7 @@ class Query:
         location: bool = True,
         stacktrace: bool = False,
         sql=True,
+        colored=True,
     ) -> str:
         attributes = []
 
@@ -90,29 +93,27 @@ class Query:
             attributes.append(self.location)
 
         if code:
-            attributes.append(self._formatted_code())
+            attributes.append(self._formatted_code() if colored else self.code)
 
         if stacktrace:
             attributes.append(str(self.stacktrace))
 
         if sql:
-            attributes.append(self._sql_str())
+            attributes.append(self._sql_str() if colored else self.sql)
 
         attributes = [c.strip() for c in attributes]
         return "\n\n".join(attributes).rstrip()
 
     @property
     def location(self) -> str:
-        return self._last_executed_line.location()
+        return self._last_executed_line().location()
 
     def _formatted_code(self) -> str:
         return highlight(f"{self.code}", Python3Lexer(), TerminalFormatter())
 
-    @property
     def _formatted_sql(self) -> str:
         return sqlparse.format(self.sql, reindent=True)
 
-    @property
     def _last_executed_line(self) -> StacktraceLine:
         last_executed_line: StacktraceLine = (
             self.stacktrace[-1] if self.stacktrace else StacktraceLine.null()
@@ -120,13 +121,14 @@ class Query:
         return last_executed_line
 
     def _sql_str(self) -> str:
-        # TODO: Handle other db_types?
         lexer = SqlLexer()
+
+        # TODO: Handle other db_types?
         if self.db_type.lower() == "postgresql":
             lexer = PostgresLexer()
 
         colored_sql: str = highlight(
-            f"{self._formatted_sql}", lexer, TerminalFormatter()
+            f"{self._formatted_sql()}", lexer, TerminalFormatter()
         )
 
         return colored_sql

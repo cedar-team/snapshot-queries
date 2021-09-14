@@ -28,6 +28,7 @@ class Queries(SliceableList):
         location: bool = True,
         stacktrace: bool = False,
         sql=True,
+        colored=True,
     ):
         """
         Display info about each query.
@@ -51,6 +52,7 @@ class Queries(SliceableList):
                 location=location,
                 stacktrace=stacktrace,
                 sql=sql,
+                colored=colored,
             )
             + "\n"
         )
@@ -64,6 +66,7 @@ class Queries(SliceableList):
         location: bool = True,
         stacktrace: bool = False,
         sql=True,
+        colored=True,
     ) -> str:
         string = ""
         for i, query in enumerate(self, start=1):
@@ -74,6 +77,7 @@ class Queries(SliceableList):
                 location=location,
                 stacktrace=stacktrace,
                 sql=sql,
+                colored=colored,
             )
             string += f"Query {i}\n"
             string += "---------\n"
@@ -158,12 +162,13 @@ class DuplicateQueries(UserDict):
     def display(
         self,
         *,
-        code: bool = False,
-        duration: bool = False,
+        code: bool = True,
+        duration: bool = True,
         idx: bool = False,
-        location: bool = False,
+        location: bool = True,
         stacktrace: bool = False,
-        sql=False,
+        sql=True,
+        colored=True,
     ):
         sys.stdout.write(
             self.display_string(
@@ -173,6 +178,7 @@ class DuplicateQueries(UserDict):
                 location=location,
                 stacktrace=stacktrace,
                 sql=sql,
+                colored=colored,
             )
             + "\n"
         )
@@ -180,12 +186,13 @@ class DuplicateQueries(UserDict):
     def display_string(
         self,
         *,
-        code: bool = False,
-        duration: bool = False,
+        code: bool = True,
+        duration: bool = True,
         idx: bool = False,
-        location: bool = False,
+        location: bool = True,
         stacktrace: bool = False,
-        sql: bool = False,
+        sql=True,
+        colored=True,
     ) -> str:
         string = ""
         for queries in self.values():
@@ -202,6 +209,7 @@ class DuplicateQueries(UserDict):
                 location=location,
                 stacktrace=stacktrace,
                 sql=sql,
+                colored=colored,
             )
 
         return string
@@ -211,12 +219,13 @@ class SimilarQueries(DuplicateQueries):
     def display_string(
         self,
         *,
-        code: bool = False,
-        duration: bool = False,
+        code: bool = True,
+        duration: bool = True,
         idx: bool = False,
-        location: bool = False,
+        location: bool = True,
         stacktrace: bool = False,
-        sql: bool = False,
+        sql=True,
+        colored=True,
     ) -> str:
         string = ""
         for queries in self.values():
@@ -232,6 +241,7 @@ class SimilarQueries(DuplicateQueries):
                 location=location,
                 stacktrace=stacktrace,
                 sql=sql,
+                colored=colored,
             )
 
         return string

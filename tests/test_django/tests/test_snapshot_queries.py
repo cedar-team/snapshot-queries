@@ -13,7 +13,7 @@ class SnapshotQueriesTest(TestCase):
             # Use list to trigger query
             list(User.objects.only("email").filter(id=1))
 
-        self.assertMatchSnapshot(queries.display_string())
+        self.assertMatchSnapshot(queries.display_string(duration=False, colored=False))
 
     def test_multiple_queries_display_string(self):
         with snapshot_queries() as queries:
@@ -21,7 +21,7 @@ class SnapshotQueriesTest(TestCase):
             list(User.objects.only("id").filter(id=2))
             list(User.objects.only("email").filter(id=1))
 
-        self.assertMatchSnapshot(queries.display_string())
+        self.assertMatchSnapshot(queries.display_string(duration=False, colored=False))
 
     def test_multiple_queries_duplicates(self):
         with snapshot_queries() as queries:
@@ -31,7 +31,9 @@ class SnapshotQueriesTest(TestCase):
             list(User.objects.only("id").filter(id=1))
             list(User.objects.only("id").filter(id=2))
 
-        self.assertMatchSnapshot(queries.duplicates().display_string())
+        self.assertMatchSnapshot(
+            queries.duplicates().display_string(duration=False, colored=False)
+        )
 
     def test_multiple_queries_similar(self):
         with snapshot_queries() as queries:
@@ -41,4 +43,6 @@ class SnapshotQueriesTest(TestCase):
             list(User.objects.only("email").filter(id=1))
             list(User.objects.only("email").filter(id=2))
 
-        self.assertMatchSnapshot(queries.similar().display_string())
+        self.assertMatchSnapshot(
+            queries.similar().display_string(duration=False, colored=False)
+        )

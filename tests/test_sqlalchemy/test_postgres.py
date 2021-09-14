@@ -62,4 +62,4 @@ class TestPostgres(TestCase):
                 conn.execute(self.students.select())
                 conn.execute(self.classes.select())
 
-        self.assertMatchSnapshot(queries.display_string())
+        self.assertMatchSnapshot(queries.display_string(colored=False, duration=False))

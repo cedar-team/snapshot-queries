@@ -60,8 +60,6 @@ conn.execute(\x1b[36mself\x1b[39;49;00m.classes.select())
 
 snapshots['TestSQLite::test_executing_queries 1'] = '''Query 1
 ---------
-< 1 ms
-
 /python/tests/test_sqlalchemy/test_sqlite.py:46 in test_executing_queries
 
 \x1b[36mid\x1b[39;49;00m=\x1b[34m1\x1b[39;49;00m, first_name=\x1b[33m"\x1b[39;49;00m\x1b[33mJuan\x1b[39;49;00m\x1b[33m"\x1b[39;49;00m, last_name=\x1b[33m"\x1b[39;49;00m\x1b[33mGonzalez\x1b[39;49;00m\x1b[33m"\x1b[39;49;00m
@@ -72,8 +70,6 @@ snapshots['TestSQLite::test_executing_queries 1'] = '''Query 1
 
 Query 2
 ---------
-< 1 ms
-
 /python/tests/test_sqlalchemy/test_sqlite.py:52 in test_executing_queries
 
 \x1b[36mid\x1b[39;49;00m=\x1b[34m1\x1b[39;49;00m, name=\x1b[33m"\x1b[39;49;00m\x1b[33mComputer Science 101\x1b[39;49;00m\x1b[33m"\x1b[39;49;00m, start_date=date(\x1b[34m2020\x1b[39;49;00m, \x1b[34m1\x1b[39;49;00m, \x1b[34m1\x1b[39;49;00m)
@@ -84,8 +80,6 @@ Query 2
 
 Query 3
 ---------
-< 1 ms
-
 /python/tests/test_sqlalchemy/test_sqlite.py:56 in test_executing_queries
 
 conn.execute(\x1b[36mself\x1b[39;49;00m.students.select())
@@ -98,8 +92,6 @@ conn.execute(\x1b[36mself\x1b[39;49;00m.students.select())
 
 Query 4
 ---------
-< 1 ms
-
 /python/tests/test_sqlalchemy/test_sqlite.py:57 in test_executing_queries
 
 conn.execute(\x1b[36mself\x1b[39;49;00m.classes.select())
