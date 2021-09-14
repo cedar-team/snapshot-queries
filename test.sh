@@ -8,7 +8,7 @@ print_in_cyan() {
     printf "\x1B[36m%b\x1B[0m\n" "$*"
 }
 
-PYTHON_VERSIONS="3.6  3.7  3.8  3.9"
+PYTHON_VERSIONS="3.8  3.9"
 TEST_SQLALCHEMY=true
 TEST_DJANGO=true
 SNAPSHOT_UPDATE="--snapshot-update"

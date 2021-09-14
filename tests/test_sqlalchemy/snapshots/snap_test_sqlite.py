@@ -9,9 +9,9 @@ snapshots = Snapshot()
 
 snapshots['TestSQLite::test_executing_queries 1'] = '''Query 1
 ---------
-/python/tests/test_sqlalchemy/test_sqlite.py:46 in test_executing_queries
+/python/tests/test_sqlalchemy/test_sqlite.py:44 in test_executing_queries
 
-id=1, first_name="Juan", last_name="Gonzalez"
+conn.execute(
 
 INSERT INTO students (id, first_name, last_name)
 VALUES (1, 'Juan', 'Gonzalez')
@@ -19,9 +19,9 @@ VALUES (1, 'Juan', 'Gonzalez')
 
 Query 2
 ---------
-/python/tests/test_sqlalchemy/test_sqlite.py:52 in test_executing_queries
+/python/tests/test_sqlalchemy/test_sqlite.py:50 in test_executing_queries
 
-id=1, name="Computer Science 101", start_date=date(2020, 1, 1)
+conn.execute(
 
 INSERT INTO classes (id, name, start_date)
 VALUES (1, 'Computer Science 101', '2020-01-01')

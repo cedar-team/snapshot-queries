@@ -1,4 +1,8 @@
 import setuptools
+import pathlib
+
+import pkg_resources
+import setuptools
 
 with open("README.md", "r", encoding="utf-8") as fh:
     long_description = fh.read()
@@ -23,14 +27,18 @@ setuptools.setup(
     ],
     packages=setuptools.find_packages(),
     python_requires=">=3.6",
-    install_requires=["sqlparse>=0.4.1", "attrs>=20.3.0", "pygments>=2.8.1"],
+    install_requires=[
+        str(requirement)
+        for requirement in pkg_resources.parse_requirements(
+            pathlib.Path("requirements.txt").read_text()
+        )
+    ],
     extras_require={
         "test": [
-            "snapshottest==0.5.1",
-            "psycopg2-binary==2.8.6",
-            "nose==1.3.7",
-            "tox==3.24.3",
-            "ipdb",
+            str(requirement)
+            for requirement in pkg_resources.parse_requirements(
+                pathlib.Path("requirements.txt").read_text()
+            )
         ]
     },
 )
