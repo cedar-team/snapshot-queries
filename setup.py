@@ -37,7 +37,7 @@ setuptools.setup(
         "test": [
             str(requirement)
             for requirement in pkg_resources.parse_requirements(
-                pathlib.Path("requirements.txt").read_text()
+                pathlib.Path("test.requirements.txt").read_text()
             )
         ]
     },
