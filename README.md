@@ -11,14 +11,14 @@ Use cases
 
 Examples
 
-- [Display queries executed](#display-queries-executed)
+- [Display queries executed in a code block](#display-queries-executed-in-a-code-block)
 - [Display specific attributes of each query](#display-specific-attributes-of-each-query)
 - [Order queries by duration](#order-queries-by-duration)
 - [Inspect the slowest query](#inspect-the-slowest-query)
 - [Group queries with duplicate sql statements together](#group-queries-with-duplicate-sql-statements-together)
 - [Group queries with similar sql statements together](#group-queries-with-similar-sql-statements-together)
 
-## Display queries executed
+## Display queries executed in a code block
 
 ```python
 from django.contrib.auth import get_user_model
