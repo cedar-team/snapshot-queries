@@ -2,7 +2,12 @@
 
 Snapshot SQL executed via Django and SqlAlchemy ORM queries.
 
-This is useful for viewing the underlying SQL that the ORM is executing. In addition, it's useful for performance. It makes N+1 queries
+Use cases:
+- See the exact query executed by a complex Django Queryset or SQLAlchemy query.
+- Quickly see the slowest queries executed in a code block
+- Identify similar queries executed in a code block to help detect the N+1 query problem
+
+Table of contents
 
 - [Display queries executed](#display-queries-executed)
 - [Display specific attributes of each query](#display-specific-attributes-of-each-query)
