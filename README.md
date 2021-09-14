@@ -3,9 +3,11 @@
 Snapshot SQL executed via Django and SqlAlchemy ORM queries.
 
 Use cases
-- See the exact query executed by a complex Django Queryset or SQLAlchemy query.
+
+- See the exact query executed by a complex Django Queryset or SQLAlchemy query
 - Quickly see the slowest queries executed in a code block
 - Identify similar queries executed in a code block to help detect the N+1 query problem
+- See the exact line of code that triggered a query execution, including its full stacktrace
 
 Examples
 
