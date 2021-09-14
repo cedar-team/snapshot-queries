@@ -56,6 +56,7 @@ class Query:
         stacktrace: bool = False,
         sql=True,
         colored=True,
+        formatted=True
     ):
         sys.stdout.write(
             self.display_string(
@@ -66,6 +67,7 @@ class Query:
                 sql=sql,
                 stacktrace=stacktrace,
                 colored=colored,
+                formatted=formatted
             )
             + "\n"
         )
@@ -80,6 +82,7 @@ class Query:
         stacktrace: bool = False,
         sql=True,
         colored=True,
+        formatted=True,
     ) -> str:
         attributes = []
 
@@ -99,7 +102,7 @@ class Query:
             attributes.append(str(self.stacktrace))
 
         if sql:
-            attributes.append(self._colored_sql_str() if colored else self.sql)
+            attributes.append(self._colored_sql_str(colored=colored, formatted=formatted) if colored else self.sql)
 
         attributes = [c.strip() for c in attributes]
         return "\n\n".join(attributes).rstrip()
@@ -112,7 +115,7 @@ class Query:
         return highlight(f"{self.code}", Python3Lexer(), TerminalFormatter())
 
     def _formatted_sql(self) -> str:
-        return sqlparse.format(self.sql, reindent=True)
+        return
 
     def _last_executed_line(self) -> StacktraceLine:
         last_executed_line: StacktraceLine = (
@@ -120,15 +123,19 @@ class Query:
         )
         return last_executed_line
 
-    def _colored_sql_str(self) -> str:
+    def _colored_sql_str(self, *, formatted: bool, colored: bool) -> str:
         lexer = SqlLexer()
 
         # TODO: Handle other db_types?
         if self.db_type.lower() == "postgresql":
             lexer = PostgresLexer()
 
-        colored_sql: str = highlight(
-            f"{self._formatted_sql()}", lexer, TerminalFormatter()
-        )
+        sql = self.sql
 
-        return colored_sql
+        if formatted:
+            sql = sqlparse.format(self.sql, reindent=True)
+
+        if colored:
+            sql = highlight(f"{self._formatted_sql()}", lexer, TerminalFormatter())
+
+        return sql

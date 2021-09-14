@@ -29,6 +29,7 @@ class Queries(SliceableList):
         stacktrace: bool = False,
         sql=True,
         colored=True,
+        formatted=True,
     ):
         """
         Display info about each query.
@@ -53,6 +54,7 @@ class Queries(SliceableList):
                 stacktrace=stacktrace,
                 sql=sql,
                 colored=colored,
+                formatted=formatted,
             )
             + "\n"
         )
@@ -67,6 +69,7 @@ class Queries(SliceableList):
         stacktrace: bool = False,
         sql=True,
         colored=True,
+        formatted=True,
     ) -> str:
         string = ""
         for i, query in enumerate(self, start=1):
@@ -78,6 +81,7 @@ class Queries(SliceableList):
                 stacktrace=stacktrace,
                 sql=sql,
                 colored=colored,
+                formatted=formatted,
             )
             string += f"Query {i}\n"
             string += "---------\n"
@@ -169,6 +173,7 @@ class DuplicateQueries(UserDict):
         stacktrace: bool = False,
         sql=True,
         colored=True,
+        formatted=True,
     ):
         sys.stdout.write(
             self.display_string(
@@ -179,6 +184,7 @@ class DuplicateQueries(UserDict):
                 stacktrace=stacktrace,
                 sql=sql,
                 colored=colored,
+                formatted=formatted,
             )
             + "\n"
         )
@@ -193,6 +199,7 @@ class DuplicateQueries(UserDict):
         stacktrace: bool = False,
         sql=True,
         colored=True,
+        formatted=True,
     ) -> str:
         string = ""
         for queries in self.values():
@@ -210,6 +217,7 @@ class DuplicateQueries(UserDict):
                 stacktrace=stacktrace,
                 sql=sql,
                 colored=colored,
+                formatted=formatted,
             )
 
         return string
@@ -226,6 +234,7 @@ class SimilarQueries(DuplicateQueries):
         stacktrace: bool = False,
         sql=True,
         colored=True,
+        formatted=True,
     ) -> str:
         string = ""
         for queries in self.values():
@@ -242,6 +251,7 @@ class SimilarQueries(DuplicateQueries):
                 stacktrace=stacktrace,
                 sql=sql,
                 colored=colored,
+                formatted=formatted,
             )
 
         return string
