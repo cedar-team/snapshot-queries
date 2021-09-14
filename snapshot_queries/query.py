@@ -49,9 +49,7 @@ class Query:
     def create(
         cls,
         db: str,
-        duration: TimeDelta,
         idx: int,
-        is_select: bool,
         params: str,
         raw_params: typing.Tuple,
         sql: str,
@@ -68,9 +66,9 @@ class Query:
         return cls(
             code=last_executed_line.code,
             db=db,
-            duration=duration,
+            duration=TimeDelta(seconds=(stop_time-start_time)),
             idx=idx,
-            is_select=is_select,
+            is_select=sql.lower().strip().startswith("select"),
             location=last_executed_line.location(),
             params=params,
             raw_params=raw_params,

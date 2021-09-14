@@ -92,13 +92,11 @@ def _snapshot_queries_sqlalchemy(queries: Queries):
                 db="",
                 sql=sql,
                 sql_parameterized=statement,
-                duration=TimeDelta(seconds=(stop_time - start_time)),
                 params=parameters,
                 raw_params=parameters,
                 stacktrace=stacktrace,
                 start_time=start_time,
                 stop_time=stop_time,
-                is_select=sql.lower().strip().startswith("select"),
             )
         )
 
@@ -226,16 +224,7 @@ class _SnapshotQueriesDjangoCursorWrapper:
             results = method(sql, params)
         finally:
             stop_time = real_time()
-            duration = TimeDelta(seconds=(stop_time - start_time))
             stacktrace = StackTrace.load()
-            _params = ""
-            try:
-                _params = json.dumps(self._decode(params))
-            except TypeError:
-                pass  # object not JSON serializable
-
-            db = getattr(self.cursor.db, "alias", "default")
-            db_type = getattr(self.cursor.db, "vendor", "unknown")
 
             # Sql might be an object (such as psycopg Composed).
             # For logging purposes, make sure it's str.
@@ -245,24 +234,30 @@ class _SnapshotQueriesDjangoCursorWrapper:
                 sql_parameterized = sql
             else:
                 sql_parameterized = sql.as_string(self.cursor.connection)
+
             sql = self.cursor.db.ops.last_executed_query(
                 self.cursor, sql, self._quote_params(params)
             )
 
+            _params = ""
+            try:
+                _params = json.dumps(self._decode(params))
+            except TypeError:
+                pass  # object not JSON serializable
+
             self._queries.append(
                 Query.create(
                     idx=len(self._queries),
-                    db_type=db_type,
-                    db=db,
+                    db_type=getattr(self.cursor.db, "vendor", "unknown"),
+                    db=getattr(self.cursor.db, "alias", "default"),
                     sql=sql,
                     sql_parameterized=sql_parameterized,
-                    duration=duration,
                     params=_params,
                     raw_params=params,
                     stacktrace=stacktrace,
                     start_time=start_time,
                     stop_time=stop_time,
-                    is_select=sql.lower().strip().startswith("select"),
                 )
             )
+
         return results
