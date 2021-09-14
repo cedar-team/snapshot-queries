@@ -7,9 +7,8 @@ from pygments import highlight
 from pygments.formatters import TerminalFormatter
 from pygments.lexers import PostgresLexer, Python3Lexer, SqlLexer
 
-from .timedelta import TimeDelta
-
 from .stacktrace import StackTrace, StacktraceLine
+from .timedelta import TimeDelta
 
 
 @attr.s(auto_attribs=True, repr=False)
@@ -54,11 +53,12 @@ class Query:
         raw_params: typing.Tuple,
         sql: str,
         sql_parameterized: str,
-        stacktrace: StackTrace,
         start_time: int,
         stop_time: int,
         db_type: str,
     ) -> "Query":
+        stacktrace = StackTrace.load()
+
         last_executed_line: StacktraceLine = (
             stacktrace[-1] if stacktrace else StacktraceLine.null()
         )
@@ -66,7 +66,7 @@ class Query:
         return cls(
             code=last_executed_line.code,
             db=db,
-            duration=TimeDelta(seconds=(stop_time-start_time)),
+            duration=TimeDelta(seconds=(stop_time - start_time)),
             idx=idx,
             is_select=sql.lower().strip().startswith("select"),
             location=last_executed_line.location(),

@@ -6,8 +6,6 @@ from typing import Callable, Dict
 
 from .queries import Queries
 from .query import Query
-from .stacktrace import StackTrace
-from .timedelta import TimeDelta
 
 try:
     from freezegun.api import real_time
@@ -83,8 +81,6 @@ def _snapshot_queries_sqlalchemy(queries: Queries):
             except TypeError:
                 logger.error("Failed to render sql statement")
 
-        stacktrace = StackTrace.load()
-
         queries.append(
             Query.create(
                 idx=len(queries),
@@ -94,7 +90,6 @@ def _snapshot_queries_sqlalchemy(queries: Queries):
                 sql_parameterized=statement,
                 params=parameters,
                 raw_params=parameters,
-                stacktrace=stacktrace,
                 start_time=start_time,
                 stop_time=stop_time,
             )
@@ -224,7 +219,6 @@ class _SnapshotQueriesDjangoCursorWrapper:
             results = method(sql, params)
         finally:
             stop_time = real_time()
-            stacktrace = StackTrace.load()
 
             # Sql might be an object (such as psycopg Composed).
             # For logging purposes, make sure it's str.
@@ -254,7 +248,6 @@ class _SnapshotQueriesDjangoCursorWrapper:
                     sql_parameterized=sql_parameterized,
                     params=_params,
                     raw_params=params,
-                    stacktrace=stacktrace,
                     start_time=start_time,
                     stop_time=stop_time,
                 )
