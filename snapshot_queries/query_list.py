@@ -9,13 +9,13 @@ from .query import Query
 from .sliceable_list import SliceableList
 
 
-class Queries(SliceableList):
+class QueryList(SliceableList):
     """List of Query instances."""
 
     def __str__(self):
         return self.display_string()
 
-    def diff(self, other: "Queries"):
+    def diff(self, other: "QueryList"):
         # TODO: Figure out what this should return
         raise NotImplementedError
 
@@ -88,13 +88,13 @@ class Queries(SliceableList):
             string += f"{query_string}\n\n\n"
         return string.rstrip()
 
-    def duplicates(self) -> "DuplicateQueries":
+    def duplicates(self) -> "DuplicateQueryList":
         """Return duplicate queries."""
-        queries_by_sql: Dict[str, Queries] = collections.defaultdict(Queries)
+        queries_by_sql: Dict[str, QueryList] = collections.defaultdict(QueryList)
         for query in self:
             queries_by_sql[query.sql].append(query)
 
-        dupes = DuplicateQueries()
+        dupes = DuplicateQueryList()
         for sql, queries in queries_by_sql.items():
             if len(queries) > 1:
                 dupes[sql] = queries
@@ -105,7 +105,7 @@ class Queries(SliceableList):
         """Return duration of queries."""
         return sum((q.duration for q in self), TimeDelta())
 
-    def order_by(self, field: str) -> "Queries":
+    def order_by(self, field: str) -> "QueryList":
         """
         Order queries by field.
 
@@ -132,13 +132,13 @@ class Queries(SliceableList):
         self.sort(key=key, reverse=reverse)
         return self
 
-    def similar(self) -> "SimilarQueries":
+    def similar(self) -> "SimilarQueryList":
         """Return similar queries."""
-        queries_by_sql: Dict[str, Queries] = collections.defaultdict(Queries)
+        queries_by_sql: Dict[str, QueryList] = collections.defaultdict(QueryList)
         for query in self:
             queries_by_sql[query.sql_parameterized].append(query)
 
-        similar = SimilarQueries()
+        similar = SimilarQueryList()
         for sql, queries in queries_by_sql.items():
             if len(queries) > 1:
                 similar[sql] = queries
@@ -158,7 +158,7 @@ class Queries(SliceableList):
         return query.location
 
 
-class DuplicateQueries(UserDict):
+class DuplicateQueryList(UserDict):
     def __str__(self):
         return self.display_string()
 
@@ -222,7 +222,7 @@ class DuplicateQueries(UserDict):
         return string
 
 
-class SimilarQueries(DuplicateQueries):
+class SimilarQueryList(DuplicateQueryList):
     def display_string(
         self,
         *,

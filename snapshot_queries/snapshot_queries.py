@@ -4,7 +4,7 @@ import logging
 from contextlib import contextmanager
 from typing import Callable, Dict
 
-from .queries import Queries
+from .query_list import QueryList
 from .query import Query
 
 try:
@@ -38,7 +38,7 @@ logger = logging.getLogger(__name__)
 @contextmanager
 def snapshot_queries():
     """Context Manager for capturing queries executed."""
-    queries = Queries()
+    queries = QueryList()
 
     snapshot_queries_sqlalchemy = (
         _snapshot_queries_sqlalchemy if sql_alchemy_available else _nullcontextmanager
@@ -55,7 +55,7 @@ def snapshot_queries():
 
 
 @contextmanager
-def _snapshot_queries_sqlalchemy(queries: Queries):
+def _snapshot_queries_sqlalchemy(queries: QueryList):
     @sqlalchemy.event.listens_for(sqlalchemy.engine.Engine, "before_cursor_execute")
     def sqlalchemy_before_cursor_execute(
         conn, cursor, statement, parameters, context, executemany
@@ -112,7 +112,7 @@ def _snapshot_queries_sqlalchemy(queries: Queries):
 
 
 @contextmanager
-def _snapshot_queries_django(queries: Queries):
+def _snapshot_queries_django(queries: QueryList):
     initial_cursors: Dict[str, Callable] = dict()
     initial_chunked_cursors: Dict[str, Callable] = dict()
 
@@ -157,7 +157,7 @@ def _nullcontextmanager(*args, **kwargs):
 
 
 class _SnapshotQueriesDjangoCursorWrapper:
-    def __init__(self, cursor, queries: Queries):
+    def __init__(self, cursor, queries: QueryList):
         self.cursor = cursor
         self._queries = queries
 
