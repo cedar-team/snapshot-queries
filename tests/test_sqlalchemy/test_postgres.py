@@ -69,5 +69,4 @@ class TestPostgres(TestCase):
                 conn.execute(self.students.select())
                 conn.execute(self.classes.select())
 
-        import ipdb; ipdb.set_trace()
         self.assertMatchSnapshot(queries.display_string())
