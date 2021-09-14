@@ -2,9 +2,17 @@
 
 Snapshot SQL executed via Django and SqlAlchemy ORM queries.
 
-This is useful for viewing the underlying SQL that the ORM is executing. In addition, it's useful for performance. It makes N+1 queries and other query issues easy to identify. In addition, if added to a test, code reviewers can see the exact SQL that is added.
+This is useful for viewing the underlying SQL that the ORM is executing. In addition, it's useful for performance. It makes N+1 queries
+
+- [Display queries executed](#display-queries-executed)
+- [Display specific attributes of each query](#display-specific-attributes-of-each-query)
+- [Order queries by duration](#order-queries-by-duration)
+- [Inspect a specific query](#inspect-a-specific-query)
+- [Group queries with duplicate sql statements together](#group-queries-with-duplicate-sql-statements-together)
+- [Group queries with similar sql statements together](#group-queries-with-similar-sql-statements-together)
 
 ## Display queries executed
+
 ```python
 from django.contrib.auth import get_user_model
 from snapshot_queries import snapshot_queries
@@ -48,7 +56,7 @@ FROM "auth_user"
 WHERE "auth_user"."id" = 7
 ```
 
-### Display specific attributes of each query
+## Display specific attributes of each query
 You can choose which attributes to display.
 
 Supported attributes to display:
@@ -109,20 +117,20 @@ WHERE "auth_user"."id" = 7
 
 ```
 
-### Order queries by duration
+##h# Order queries by duration
 ```python
 fastest_queries = queries.order_by('duration')[:3]
 slowest_queries = queries.order_by('-duration')[:3]
 slowest_queries.display()
 ```
 
-### Inspect a specific query
+## Inspect a specific query
 ```python
 slowest_query = queries.order_by('-duration')[0]
 slowest_query.display(code=True, location=True, sql=True)
 ```
 
-### Group queries with duplicate sql statements together
+## Group queries with duplicate sql statements together
 ```python
 from django.contrib.auth import get_user_model
 from snapshot_queries import snapshot_queries
@@ -187,7 +195,7 @@ FROM "auth_user"
 WHERE "auth_user"."id" = 1
 ```
 
-### Group queries with similar sql statements together
+## Group queries with similar sql statements together
 ```python
 from django.contrib.auth import get_user_model
 from snapshot_queries import snapshot_queries
