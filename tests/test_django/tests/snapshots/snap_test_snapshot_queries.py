@@ -7,7 +7,9 @@ from snapshottest import Snapshot
 
 snapshots = Snapshot()
 
-snapshots['SnapshotQueriesTest::test_multiple_queries_display_string 1'] = '''Query 1
+snapshots[
+    "SnapshotQueriesTest::test_multiple_queries_display_string 1"
+] = """Query 1
 ---------
 /python/tests/test_django/tests/test_snapshot_queries.py:21 in test_multiple_queries_display_string
 
@@ -27,9 +29,11 @@ list(User.objects.only("email").filter(id=1))
 SELECT "auth_user"."id",
        "auth_user"."email"
 FROM "auth_user"
-WHERE "auth_user"."id" = \'1\''''
+WHERE "auth_user"."id" = \'1\'"""
 
-snapshots['SnapshotQueriesTest::test_single_query_display_string 1'] = '''Query 1
+snapshots[
+    "SnapshotQueriesTest::test_single_query_display_string 1"
+] = """Query 1
 ---------
 /python/tests/test_django/tests/test_snapshot_queries.py:14 in test_single_query_display_string
 
@@ -38,9 +42,11 @@ list(User.objects.only("email").filter(id=1))
 SELECT "auth_user"."id",
        "auth_user"."email"
 FROM "auth_user"
-WHERE "auth_user"."id" = \'1\''''
+WHERE "auth_user"."id" = \'1\'"""
 
-snapshots['SnapshotQueriesTest::test_multiple_queries_duplicates 1'] = '''
+snapshots[
+    "SnapshotQueriesTest::test_multiple_queries_duplicates 1"
+] = """
 
 ============================
 2 duplicate queries detected
@@ -64,9 +70,11 @@ list(User.objects.only("id").filter(id=1))
 
 SELECT "auth_user"."id"
 FROM "auth_user"
-WHERE "auth_user"."id" = \'1\''''
+WHERE "auth_user"."id" = \'1\'"""
 
-snapshots['SnapshotQueriesTest::test_multiple_queries_similar 1'] = '''
+snapshots[
+    "SnapshotQueriesTest::test_multiple_queries_similar 1"
+] = """
 
 ==========================
 2 similar queries detected
@@ -92,4 +100,4 @@ list(User.objects.only("email").filter(id=2))
 SELECT "auth_user"."id",
        "auth_user"."email"
 FROM "auth_user"
-WHERE "auth_user"."id" = \'2\''''
+WHERE "auth_user"."id" = \'2\'"""

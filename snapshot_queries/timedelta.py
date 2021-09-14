@@ -40,4 +40,3 @@ class TimeDelta(datetime.timedelta):
 
     def total_minutes(self) -> float:
         return self.total_seconds() / 60
-

@@ -11,7 +11,9 @@ class TestPostgres(TestCase):
     def setUpClass(cls):
         super().setUpClass()
 
-        cls.engine = create_engine(f"postgresql+psycopg2://postgres:postgres@postgres-db/postgres")
+        cls.engine = create_engine(
+            f"postgresql+psycopg2://postgres:postgres@postgres-db/postgres"
+        )
 
         meta = MetaData()
 
@@ -34,7 +36,6 @@ class TestPostgres(TestCase):
             Column("start_date", Date),
         )
         cls.tables.append(cls.classes)
-
 
         meta.create_all(cls.engine)
 
