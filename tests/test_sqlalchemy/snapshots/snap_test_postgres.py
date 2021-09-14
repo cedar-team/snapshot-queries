@@ -11,9 +11,9 @@ snapshots['TestPostgres::test_executing_queries 1'] = '''Query 1
 ---------
 < 1 ms
 
-/python/tests/test_sqlalchemy/test_postgres.py:50 in test_executing_queries
+/python/tests/test_sqlalchemy/test_postgres.py:52 in test_executing_queries
 
-conn.execute(
+\x1b[36mid\x1b[39;49;00m=\x1b[34m1\x1b[39;49;00m, first_name=\x1b[33m"\x1b[39;49;00m\x1b[33mJuan\x1b[39;49;00m\x1b[33m"\x1b[39;49;00m, last_name=\x1b[33m"\x1b[39;49;00m\x1b[33mGonzalez\x1b[39;49;00m\x1b[33m"\x1b[39;49;00m
 
 \x1b[34mINSERT\x1b[39;49;00m \x1b[34mINTO\x1b[39;49;00m students (id, first_name, last_name)
 \x1b[34mVALUES\x1b[39;49;00m (\x1b[34m1\x1b[39;49;00m, Juan, Gonzalez)
@@ -23,9 +23,9 @@ Query 2
 ---------
 < 1 ms
 
-/python/tests/test_sqlalchemy/test_postgres.py:56 in test_executing_queries
+/python/tests/test_sqlalchemy/test_postgres.py:58 in test_executing_queries
 
-conn.execute(
+\x1b[36mid\x1b[39;49;00m=\x1b[34m1\x1b[39;49;00m, name=\x1b[33m"\x1b[39;49;00m\x1b[33mComputer Science 101\x1b[39;49;00m\x1b[33m"\x1b[39;49;00m, start_date=date(\x1b[34m2020\x1b[39;49;00m, \x1b[34m1\x1b[39;49;00m, \x1b[34m1\x1b[39;49;00m)
 
 \x1b[34mINSERT\x1b[39;49;00m \x1b[34mINTO\x1b[39;49;00m classes (id, \x1b[34mname\x1b[39;49;00m, start_date)
 \x1b[34mVALUES\x1b[39;49;00m (\x1b[34m1\x1b[39;49;00m, Computer Science \x1b[34m101\x1b[39;49;00m, \x1b[34m2020\x1b[39;49;00m-\x1b[34m01\x1b[39;49;00m-\x1b[34m01\x1b[39;49;00m)

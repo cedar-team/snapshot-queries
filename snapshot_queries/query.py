@@ -40,7 +40,7 @@ class Query:
         )
 
     def __str__(self) -> str:
-        return self._default_display_string()
+        return self.display_string()
 
     @property
     def code(self) -> str:
@@ -49,12 +49,12 @@ class Query:
     def display(
         self,
         *,
-        code: bool = False,
-        duration: bool = False,
+        code: bool = True,
+        duration: bool = True,
         idx: bool = False,
-        location: bool = False,
+        location: bool = True,
         stacktrace: bool = False,
-        sql=False,
+        sql=True,
     ):
         sys.stdout.write(
             self.display_string(
@@ -71,12 +71,12 @@ class Query:
     def display_string(
         self,
         *,
-        code: bool = False,
-        duration: bool = False,
+        code: bool = True,
+        duration: bool = True,
         idx: bool = False,
-        location: bool = False,
+        location: bool = True,
         stacktrace: bool = False,
-        sql=False,
+        sql=True,
     ) -> str:
         attributes = []
 
@@ -99,8 +99,7 @@ class Query:
             attributes.append(self._sql_str())
 
         attributes = [c.strip() for c in attributes]
-        display_string = "\n\n".join(attributes).rstrip()
-        return f"{display_string or self._default_display_string()}"
+        return "\n\n".join(attributes).rstrip()
 
     @property
     def location(self) -> str:
@@ -108,9 +107,6 @@ class Query:
 
     def _formatted_code(self) -> str:
         return highlight(f"{self.code}", Python3Lexer(), TerminalFormatter())
-
-    def _default_display_string(self) -> str:
-        return self.display_string(duration=True, location=True, code=True, sql=True)
 
     @property
     def _formatted_sql(self) -> str:

@@ -22,12 +22,12 @@ class Queries(SliceableList):
     def display(
         self,
         *,
-        code: bool = False,
-        duration: bool = False,
+        code: bool = True,
+        duration: bool = True,
         idx: bool = False,
-        location: bool = False,
+        location: bool = True,
         stacktrace: bool = False,
-        sql=False,
+        sql=True,
     ):
         """
         Display info about each query.
@@ -58,12 +58,12 @@ class Queries(SliceableList):
     def display_string(
         self,
         *,
-        code: bool = False,
-        duration: bool = False,
+        code: bool = True,
+        duration: bool = True,
         idx: bool = False,
-        location: bool = False,
+        location: bool = True,
         stacktrace: bool = False,
-        sql=False,
+        sql=True,
     ) -> str:
         string = ""
         for i, query in enumerate(self, start=1):
