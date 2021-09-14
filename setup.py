@@ -30,6 +30,7 @@ setuptools.setup(
             "psycopg2-binary==2.8.6",
             "nose==1.3.7",
             "tox==3.24.3",
+            "ipdb"
         ]
     },
 )
