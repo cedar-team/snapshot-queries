@@ -99,7 +99,7 @@ class Query:
             attributes.append(str(self.stacktrace))
 
         if sql:
-            attributes.append(self._sql_str() if colored else self.sql)
+            attributes.append(self._colored_sql_str() if colored else self.sql)
 
         attributes = [c.strip() for c in attributes]
         return "\n\n".join(attributes).rstrip()
@@ -120,7 +120,7 @@ class Query:
         )
         return last_executed_line
 
-    def _sql_str(self) -> str:
+    def _colored_sql_str(self) -> str:
         lexer = SqlLexer()
 
         # TODO: Handle other db_types?
