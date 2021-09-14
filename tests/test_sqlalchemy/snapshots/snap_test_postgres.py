@@ -11,7 +11,7 @@ snapshots['TestPostgres::test_executing_queries 1'] = '''Query 1
 ---------
 < 1 ms
 
-/python/tests/test_sqlalchemy/test_postgres.py:57 in test_executing_queries
+/python/tests/test_sqlalchemy/test_postgres.py:50 in test_executing_queries
 
 conn.execute(
 
@@ -23,7 +23,7 @@ Query 2
 ---------
 < 1 ms
 
-/python/tests/test_sqlalchemy/test_postgres.py:63 in test_executing_queries
+/python/tests/test_sqlalchemy/test_postgres.py:56 in test_executing_queries
 
 conn.execute(
 
@@ -35,7 +35,7 @@ Query 3
 ---------
 < 1 ms
 
-/python/tests/test_sqlalchemy/test_postgres.py:69 in test_executing_queries
+/python/tests/test_sqlalchemy/test_postgres.py:62 in test_executing_queries
 
 conn.execute(\x1b[36mself\x1b[39;49;00m.students.select())
 
@@ -49,7 +49,7 @@ Query 4
 ---------
 < 1 ms
 
-/python/tests/test_sqlalchemy/test_postgres.py:70 in test_executing_queries
+/python/tests/test_sqlalchemy/test_postgres.py:63 in test_executing_queries
 
 conn.execute(\x1b[36mself\x1b[39;49;00m.classes.select())
 

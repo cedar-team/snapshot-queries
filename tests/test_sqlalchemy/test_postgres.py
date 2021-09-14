@@ -1,7 +1,6 @@
 from snapshottest import TestCase
 from sqlalchemy import create_engine, Table, Column, Integer, String, MetaData, Date
 from snapshot_queries import snapshot_queries
-from pathlib import Path
 from datetime import date
 
 
@@ -15,12 +14,6 @@ class TestPostgres(TestCase):
         cls.engine = create_engine(f"postgresql+psycopg2://postgres:postgres@postgres-db/postgres")
 
         meta = MetaData()
-
-        conn = cls.engine.connect()
-        trans = conn.begin()
-        for table in meta.sorted_tables:
-            conn.execute(table.delete())
-        trans.commit()
 
         cls.tables = []
 

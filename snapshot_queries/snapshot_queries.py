@@ -39,7 +39,7 @@ logger = logging.getLogger(__name__)
 
 @contextmanager
 def snapshot_queries():
-    """Context Manager for debugging queries executed."""
+    """Context Manager for capturing queries executed."""
     queries = Queries()
 
     snapshot_queries_sqlalchemy = (
