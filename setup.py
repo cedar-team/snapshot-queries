@@ -4,8 +4,7 @@ import pathlib
 import pkg_resources
 import setuptools
 
-with open("README.md", "r", encoding="utf-8") as fh:
-    long_description = fh.read()
+__version__ = "1.0.0"
 
 setuptools.setup(
     name="snapshot-queries",
@@ -14,7 +13,7 @@ setuptools.setup(
     author_email="support@cedar.com",
     license="MIT",
     description="A tool for capturing queries executed in Django and SqlAlchemy",
-    long_description=long_description,
+    long_description=pathlib.Path("README.md").read_text(),
     long_description_content_type="text/markdown",
     url="https://github.com/cedar-team/snapshot-queries",
     project_urls={
