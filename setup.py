@@ -4,7 +4,7 @@ import pathlib
 import pkg_resources
 import setuptools
 
-__version__ = "0.0.0"
+__version__ = "0.1.0"
 
 setuptools.setup(
     name="snapshot-queries",
