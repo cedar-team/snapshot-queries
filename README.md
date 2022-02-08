@@ -25,11 +25,11 @@ from django.contrib.auth import get_user_model
 from snapshot_queries import snapshot_queries
 
 User = get_user_model()
-with snapshot_queries() as queries:
+with snapshot_queries() as queries_executed:
     User.objects.only('email').get(id=1)
     User.objects.only('email').get(id=7)
 
-queries.display()
+queries_executed.display()
 ```
 
 Output:
@@ -77,7 +77,7 @@ Supported attributes to display:
 - **colored** (display the sql statement colored)
 - **formatted** (display the sql statement formatted)
 
-E.g. to display stacktrace for each query, use `queries.display(stacktrace=True)`:
+E.g. to display the stacktrace for each query, use `queries_executed.display(stacktrace=True)`:
 
 ```python
 from django.contrib.auth import get_user_model
@@ -86,11 +86,11 @@ from snapshot_queries import snapshot_queries
 User = get_user_model()
 
 def main():
-    with snapshot_queries() as queries:
+    with snapshot_queries() as queries_executed:
         User.objects.only('email').get(id=1)
         User.objects.only('is_staff').get(id=7)
 
-    queries.display(sql=True, stacktrace=True)
+    queries_executed.display(sql=True, stacktrace=True)
 
 main()
 ```
@@ -126,14 +126,14 @@ WHERE "auth_user"."id" = 7
 
 ## Order queries by duration
 ```python
-fastest_queries = queries.order_by('duration')[:3]
-slowest_queries = queries.order_by('-duration')[:3]
-slowest_queries.display()
+fastest_queries = queries_executed.order_by('duration')[:3]
+slowest_queries = queries_executed.order_by('-duration')[:3]
+slowest_queries_executed.display()
 ```
 
 ## Inspect the slowest query
 ```python
-slowest_query = queries.order_by('-duration')[0]
+slowest_query = queries_executed.order_by('-duration')[0]
 slowest_query.display(code=True, location=True, sql=True)
 ```
 
@@ -144,14 +144,13 @@ from snapshot_queries import snapshot_queries
 
 User = get_user_model()
 
-with snapshot_queries() as queries:
+with snapshot_queries() as queries_executed:
     User.objects.only('email').get(id=1)
     User.objects.only('email').get(id=1)
     User.objects.only('email').get(id=1)
     User.objects.only('email').get(id=7)
 
-
-duplicates = queries.duplicates().display()
+duplicates = queries_executed.duplicates().display()
 ```
 
 Output:
@@ -209,14 +208,13 @@ from snapshot_queries import snapshot_queries
 
 User = get_user_model()
 
-with snapshot_queries() as queries:
+with snapshot_queries() as queries_executed:
     User.objects.only('email').get(id=1)
     User.objects.only('email').get(id=1)
     User.objects.only('email').get(id=1)
     User.objects.only('email').get(id=7)
 
-
-similar = queries.similar().display()
+similar = queries_executed.similar().display()
 ```
 
 Output
