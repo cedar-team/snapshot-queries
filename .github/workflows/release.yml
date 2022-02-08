@@ -1,23 +1,35 @@
-name: Semantic Release
+name: Publish Python 🐍 distributions 📦 to PyPI and TestPyPI
 
-on:
-  push:
-    branches:
-      - main
+on: push
 
 jobs:
-  release:
-    runs-on: ubuntu-latest
-    concurrency: release
+  build-n-publish:
+    name: Build and publish Python 🐍 distributions 📦 to PyPI and TestPyPI
+    runs-on: ubuntu-18.04
 
     steps:
-    - uses: actions/checkout@v2
-      with:
-        fetch-depth: 0
-        token: ${{ secrets.GH_TOKEN }}
+      - uses: actions/checkout@master
 
-    - name: Python Semantic Release
-      uses: cedar-team/python-semantic-release@debugging
-      with:
-        github_token: ${{ secrets.GH_TOKEN }}
-        pypi_token: ${{ secrets.PYPI_TOKEN }}
+      - name: Set up Python 3.9
+        uses: actions/setup-python@v1
+        with:
+          python-version: 3.9
+
+      - name: Install pypa/build
+        run: python -m pip install build --user
+
+      - name: Build a binary wheel and a source tarball
+        run: python -m build --sdist --wheel --outdir dist/ .
+
+      # TODO: Setup lauching to test PyPI first?
+      # - name: Publish distribution 📦 to Test PyPI
+      #   uses: pypa/gh-action-pypi-publish@master
+      #   with:
+      #     password: ${{ secrets.PYPI_TOKEN }}
+      #     repository_url: https://test.pypi.org/legacy/
+
+      # - name: Publish distribution 📦 to PyPI
+      #   if: startsWith(github.ref, 'refs/tags')
+      #   uses: pypa/gh-action-pypi-publish@master
+      #   with:
+      #     password: ${{ secrets.PYPI_TOKEN }}
