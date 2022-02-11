@@ -194,7 +194,7 @@ class _SnapshotQueriesDjangoCursorWrapper:
         # make sure datetime, date and time are converted to string by force_text
         CONVERT_TYPES = (datetime.datetime, datetime.date, datetime.time)
         try:
-            return django.utils.encoding.force_text(
+            return django.utils.encoding.force_str(
                 param, strings_only=not isinstance(param, CONVERT_TYPES)
             )
         except UnicodeDecodeError:
