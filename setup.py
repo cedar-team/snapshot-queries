@@ -38,6 +38,9 @@ setuptools.setup(
             for requirement in pkg_resources.parse_requirements(
                 pathlib.Path("test.requirements.txt").read_text()
             )
-        ]
+        ],
+        # NOTE: Since this is extra is called "snapshot-testing", the "test" extra
+        #       should be renamed to "development" to avoid confusion
+        "snapshottest": ["snapshottest"],
     },
 )
