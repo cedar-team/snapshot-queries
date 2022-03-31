@@ -4,75 +4,60 @@ from snapshot_queries import snapshot_queries
 from snapshot_queries.testing import SnapshotQueriesTestCase
 from pathlib import Path
 from datetime import date
+import pytest
+from .tables import Students, Classes, Tables
+import sqlalchemy.orm
+
+metadata = MetaData()
+db_file = Path("/tmp/college.db")
+
+def get_engine():
+    return create_engine(f"sqlite:///{db_file}")
 
 
-class TestSQLite(SnapshotQueriesTestCase):
-    maxDiff = None
+@pytest.fixture
+def db_tables():
+    if db_file.exists():
+        db_file.unlink()
 
-    @classmethod
-    def setUpClass(cls):
-        super().setUpClass()
+    engine = get_engine()
+    metadata.create_all(engine)
 
-        db_file = Path("/tmp/college.db")
-        if db_file.exists():
-            db_file.unlink()
+    try:
+        yield
+    finally:
+        # Truncate the tables at the end
+        with engine.connect() as conn:
+            for table in metadata.tables:
+                conn.execute(table.delete())
 
-        cls.engine = create_engine(f"sqlite:///{db_file}")
 
-        meta = MetaData()
-
-        cls.students = Table(
-            "students",
-            meta,
-            Column("id", Integer, primary_key=True),
-            Column("first_name", String),
-            Column("last_name", String),
-        )
-
-        cls.classes = Table(
-            "classes",
-            meta,
-            Column("id", Integer, primary_key=True),
-            Column("name", String),
-            Column("start_date", Date),
-        )
-
-        meta.create_all(cls.engine)
-
-    def test_executing_queries(self):
-        with snapshot_queries() as queries:
-            with self.engine.connect() as conn:
-                conn.execute(
-                    self.students.insert().values(
-                        id=1, first_name="Juan", last_name="Gonzalez"
-                    )
+def test_executing_queries(snapshot):
+    with snapshot_queries() as queries:
+        with sqlalchemy.orm.Session(get_engine(), future=True) as session:
+            with session.begin():
+                # INSERT a student and a class
+                session.add(Students(id=1, first_name="Juan", last_name="Gonzalez"))
+                session.add(
+                    Classes(id=1, name="Computer Science 101", start_date=date(2020, 1, 1))
                 )
 
-                conn.execute(
-                    self.classes.insert().values(
-                        id=1, name="Computer Science 101", start_date=date(2020, 1, 1)
-                    )
-                )
+                # SELECT all of the students and classes
+                session.execute(sqlalchemy.select(Students))
+                session.execute(sqlalchemy.select(Classes))
 
-                conn.execute(self.students.select())
-                conn.execute(self.classes.select())
+    snapshot.assert_match(queries.display_string(colored=False, duration=False))
 
-        self.assertMatchSnapshot(queries.display_string(colored=False, duration=False))
+def test_assert_queries_match_snapshot(snapshot):
+    # with self.assertQueriesMatchSnapshot():
+    with sqlalchemy.orm.Session(get_engine(), future=True) as session:
+        with session.begin():
+            # INSERT a student and a class
+            session.add(Students(id=1, first_name="Juan", last_name="Gonzalez"))
+            session.add(
+                Classes(id=1, name="Computer Science 101", start_date=date(2020, 1, 1))
+            )
 
-    def test_assert_queries_match_snapshot(self):
-        with self.assertQueriesMatchSnapshot():
-            with self.engine.connect() as conn:
-                conn.execute(
-                    self.students.insert().values(
-                        id=2, first_name="Juan", last_name="Gonzalez"
-                    )
-                )
-
-                conn.execute(
-                    self.classes.insert().values(
-                        id=2, name="Computer Science 101", start_date=date(2020, 1, 1)
-                    )
-                )
-
-                conn.execute(self.students.select())
-                conn.execute(self.classes.select())
+            # SELECT all of the students and classes
+            session.execute(sqlalchemy.select(Students))
+            session.execute(sqlalchemy.select(Classes))
