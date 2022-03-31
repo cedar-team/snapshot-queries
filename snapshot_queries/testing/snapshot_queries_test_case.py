@@ -138,7 +138,12 @@ def change_query(query):
 
 class AssertQueriesMatchMixin:
     @contextmanager
-    def assertQueriesMatchSnapshot(self):
+    def assertQueriesMatchSnapshot(self, name:str =""):
+        with self._assert_queries_match(name=name):
+            yield
+
+    @contextmanager
+    def _assert_queries_match(self, name: str):
         """
         Assert queries matches snapshot.
         Example:
@@ -161,7 +166,7 @@ class AssertQueriesMatchMixin:
         two_newlines = "\n\n"
         try:
             return self.assertMatchSnapshot(
-                f"\n{len(formatted_queries)} Queries{two_newlines}{two_newlines.join(formatted_queries)}\n"
+                f"\n{len(formatted_queries)} Queries{two_newlines}{two_newlines.join(formatted_queries)}\n", name=name
             )
         except AssertionError:
             # Catch the error and make the error more useful
