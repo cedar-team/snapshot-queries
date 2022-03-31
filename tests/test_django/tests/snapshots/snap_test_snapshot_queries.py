@@ -93,3 +93,19 @@ SELECT "auth_user"."id",
        "auth_user"."email"
 FROM "auth_user"
 WHERE "auth_user"."id" = \'2\''''
+
+snapshots['SnapshotQueriesTest::test_assert_queries_match 1'] = '''
+3 Queries
+
+SELECT ...
+FROM "auth_user"
+WHERE "auth_user"."id" = %s
+
+SELECT ...
+FROM "auth_user"
+WHERE "auth_user"."id" = %s
+
+SELECT ...
+FROM "auth_user"
+WHERE "auth_user"."id" = %s
+'''

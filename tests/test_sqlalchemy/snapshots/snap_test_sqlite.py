@@ -49,3 +49,19 @@ SELECT classes.id,
        classes.name,
        classes.start_date
 FROM classes'''
+
+snapshots['TestSQLite::test_assert_queries_match_snapshot 1'] = '''
+4 Queries
+
+INSERT INTO students (...)
+VALUES (...)
+
+INSERT INTO classes (...)
+VALUES (...)
+
+SELECT ...
+FROM students
+
+SELECT ...
+FROM classes
+'''
