@@ -9,7 +9,7 @@ snapshots = Snapshot()
 
 snapshots['SnapshotQueriesTest::test_multiple_queries_display_string 1'] = '''Query 1
 ---------
-/python/tests/test_django/tests/test_snapshot_queries.py:21 in test_multiple_queries_display_string
+/python/tests/test_django/tests/test_snapshot_queries.py:23 in test_multiple_queries_display_string
 
 list(User.objects.only("id").filter(id=2))
 
@@ -20,7 +20,7 @@ WHERE "auth_user"."id" = \'2\'
 
 Query 2
 ---------
-/python/tests/test_django/tests/test_snapshot_queries.py:22 in test_multiple_queries_display_string
+/python/tests/test_django/tests/test_snapshot_queries.py:24 in test_multiple_queries_display_string
 
 list(User.objects.only("email").filter(id=1))
 
@@ -31,7 +31,7 @@ WHERE "auth_user"."id" = \'1\''''
 
 snapshots['SnapshotQueriesTest::test_single_query_display_string 1'] = '''Query 1
 ---------
-/python/tests/test_django/tests/test_snapshot_queries.py:14 in test_single_query_display_string
+/python/tests/test_django/tests/test_snapshot_queries.py:16 in test_single_query_display_string
 
 list(User.objects.only("email").filter(id=1))
 
@@ -47,7 +47,7 @@ snapshots['SnapshotQueriesTest::test_multiple_queries_duplicates 1'] = '''
 ============================
 Query 1
 ---------
-/python/tests/test_django/tests/test_snapshot_queries.py:30 in test_multiple_queries_duplicates
+/python/tests/test_django/tests/test_snapshot_queries.py:32 in test_multiple_queries_duplicates
 
 list(User.objects.only("id").filter(id=1))
 
@@ -58,7 +58,7 @@ WHERE "auth_user"."id" = \'1\'
 
 Query 2
 ---------
-/python/tests/test_django/tests/test_snapshot_queries.py:31 in test_multiple_queries_duplicates
+/python/tests/test_django/tests/test_snapshot_queries.py:33 in test_multiple_queries_duplicates
 
 list(User.objects.only("id").filter(id=1))
 
@@ -73,7 +73,7 @@ snapshots['SnapshotQueriesTest::test_multiple_queries_similar 1'] = '''
 ==========================
 Query 1
 ---------
-/python/tests/test_django/tests/test_snapshot_queries.py:43 in test_multiple_queries_similar
+/python/tests/test_django/tests/test_snapshot_queries.py:45 in test_multiple_queries_similar
 
 list(User.objects.only("email").filter(id=1))
 
@@ -85,7 +85,7 @@ WHERE "auth_user"."id" = \'1\'
 
 Query 2
 ---------
-/python/tests/test_django/tests/test_snapshot_queries.py:44 in test_multiple_queries_similar
+/python/tests/test_django/tests/test_snapshot_queries.py:46 in test_multiple_queries_similar
 
 list(User.objects.only("email").filter(id=2))
 

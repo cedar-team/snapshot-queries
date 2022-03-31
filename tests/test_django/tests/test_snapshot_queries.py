@@ -1,11 +1,13 @@
 from snapshot_queries import snapshot_queries
 from django.contrib.auth import get_user_model
 from snapshottest.django import TestCase
+from snapshot_queries import snapshot_queries
+from snapshot_queries.testing import SnapshotQueriesDjangoTestCase
 
 User = get_user_model()
 
 
-class SnapshotQueriesTest(TestCase):
+class SnapshotQueriesTest(SnapshotQueriesDjangoTestCase):
     maxDiff = None
 
     def test_single_query_display_string(self):
@@ -46,3 +48,11 @@ class SnapshotQueriesTest(TestCase):
         self.assertMatchSnapshot(
             queries.similar().display_string(duration=False, colored=False)
         )
+
+    def test_assert_queries_match(self):
+        with self.assertQueriesMatchSnapshot():
+            # Use list to trigger query
+            # Second 2 should be similar, not the first because it's a different field
+            list(User.objects.only("id").filter(id=1))
+            list(User.objects.only("email").filter(id=1))
+            list(User.objects.only("email").filter(id=2))

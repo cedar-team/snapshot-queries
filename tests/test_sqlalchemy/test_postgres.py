@@ -1,10 +1,11 @@
 from snapshottest import TestCase
 from sqlalchemy import create_engine, Table, Column, Integer, String, MetaData, Date
 from snapshot_queries import snapshot_queries
+from snapshot_queries.testing import SnapshotQueriesTestCase
 from datetime import date
 
 
-class TestPostgres(TestCase):
+class TestPostgres(SnapshotQueriesTestCase):
     maxDiff = None
 
     @classmethod
@@ -64,3 +65,22 @@ class TestPostgres(TestCase):
                 conn.execute(self.classes.select())
 
         self.assertMatchSnapshot(queries.display_string(colored=False, duration=False))
+
+    def test_assert_queries_match_snapshot(self):
+        with self.assertQueriesMatchSnapshot():
+            with self.engine.connect() as conn:
+                conn.execute(
+                    self.students.insert().values(
+                        id=1, first_name="Juan", last_name="Gonzalez"
+                    )
+                )
+
+                conn.execute(
+                    self.classes.insert().values(
+                        id=1, name="Computer Science 101", start_date=date(2020, 1, 1)
+                    )
+                )
+
+                conn.execute(self.students.select())
+                conn.execute(self.classes.select())
+
