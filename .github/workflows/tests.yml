@@ -6,10 +6,10 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: [ 3.9 ]
+        python-version: [ 3.8, 3.9 ]
     steps:
       - uses: actions/checkout@v2
       - name: Build image for Python ${{ matrix.python-version }}
-        run: docker-compose build --build-args PYTHON_VERSION="${{ matrix.python-version }}"
+        run: docker-compose build --build-arg PYTHON_VERSION="${{ matrix.python-version }}"
       - name: Run Tests
         run: docker-compose run --rm -w /python python_tests tox
