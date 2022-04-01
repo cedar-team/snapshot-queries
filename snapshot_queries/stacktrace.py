@@ -1,8 +1,9 @@
-import attr
 import os
 import pkgutil
 import traceback
 import typing
+
+import attr
 
 from .sliceable_list import SliceableList
 

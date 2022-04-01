@@ -1,8 +1,11 @@
-from snapshottest import TestCase
-from sqlalchemy import create_engine, Table, Column, Integer, String, MetaData, Date
-from snapshot_queries import snapshot_queries
-from pathlib import Path
 from datetime import date
+from pathlib import Path
+
+from snapshottest import TestCase
+from sqlalchemy import (Column, Date, Integer, MetaData, String, Table,
+                        create_engine)
+
+from snapshot_queries import snapshot_queries
 
 
 class TestSQLite(TestCase):

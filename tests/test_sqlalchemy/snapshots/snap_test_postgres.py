@@ -4,12 +4,13 @@ from __future__ import unicode_literals
 
 from snapshottest import Snapshot
 
-
 snapshots = Snapshot()
 
-snapshots['TestPostgres::test_executing_queries 1'] = '''Query 1
+snapshots[
+    "TestPostgres::test_executing_queries 1"
+] = """Query 1
 ---------
-/python/tests/test_sqlalchemy/test_postgres.py:51 in test_executing_queries
+/python/tests/test_sqlalchemy/test_postgres.py:54 in test_executing_queries
 
 conn.execute(
 
@@ -19,7 +20,7 @@ VALUES (1, Juan, Gonzalez)
 
 Query 2
 ---------
-/python/tests/test_sqlalchemy/test_postgres.py:57 in test_executing_queries
+/python/tests/test_sqlalchemy/test_postgres.py:60 in test_executing_queries
 
 conn.execute(
 
@@ -29,7 +30,7 @@ VALUES (1, Computer Science 101, 2020-01-01)
 
 Query 3
 ---------
-/python/tests/test_sqlalchemy/test_postgres.py:63 in test_executing_queries
+/python/tests/test_sqlalchemy/test_postgres.py:66 in test_executing_queries
 
 conn.execute(self.students.select())
 
@@ -41,11 +42,11 @@ FROM students
 
 Query 4
 ---------
-/python/tests/test_sqlalchemy/test_postgres.py:64 in test_executing_queries
+/python/tests/test_sqlalchemy/test_postgres.py:67 in test_executing_queries
 
 conn.execute(self.classes.select())
 
 SELECT classes.id,
        classes.name,
        classes.start_date
-FROM classes'''
+FROM classes"""

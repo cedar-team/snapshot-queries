@@ -1,26 +1,24 @@
 ARG PYTHON_VERSION
+
 FROM python:$PYTHON_VERSION as base
+
 WORKDIR /python
 
-COPY requirements.txt ./
-RUN pip install -r requirements.txt
+RUN pip install tox==3.24.5
 
-COPY test.requirements.txt ./
-RUN pip install -r test.requirements.txt
+FROM base as development
+# Configures a venv with django and sqlalchemy installed to facilitate local development
+# and testing
 
-########
-# Django
-########
-FROM base as django
-RUN pip install django
-COPY . ./
-RUN pip install --no-deps -e .
+# Add the bare minimum just so tox can set up the venv
+COPY pyproject.toml /python
+COPY setup.cfg /python
+COPY tox.ini /python
+COPY snapshot_queries /python/snapshot_queries/
 
-############
-# SqlAlchemy
-############
-FROM base as sqlalchemy
-RUN pip install sqlalchemy
-COPY . ./
-RUN pip install --no-deps -e .
+
+ENV PATH=/venv-tox/bin:$PATH
+
+RUN tox --devenv /venv-tox -e django-and-sqlalchemy
+
 

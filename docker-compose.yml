@@ -1,10 +1,10 @@
+# docker-compose file to facilitate local development and testing in dev and CI
 version: '3'
 services:
-  test-django:
-    image: snapshot-queries-django-tests-${PYTHON_VERSION:-3.9}
+  local_development:
     build:
       context: .
-      target: django
+      target: development
       args:
         PYTHON_VERSION: ${PYTHON_VERSION:-3.9}
     volumes:
@@ -13,11 +13,9 @@ services:
     depends_on:
       - postgres-db
 
-  test-sqlalchemy:
-    image: snapshot-queries-sqlalchemy-tests-${PYTHON_VERSION:-3.9}
+  testing_environment:
     build:
       context: .
-      target: sqlalchemy
       args:
         PYTHON_VERSION: ${PYTHON_VERSION:-3.9}
     volumes:
