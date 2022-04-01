@@ -1,26 +1,6 @@
 ARG PYTHON_VERSION
-FROM python:$PYTHON_VERSION as base
+
+FROM python:$PYTHON_VERSION
 WORKDIR /python
 
-COPY requirements.txt ./
-RUN pip install -r requirements.txt
-
-COPY test.requirements.txt ./
-RUN pip install -r test.requirements.txt
-
-########
-# Django
-########
-FROM base as django
-RUN pip install django
-COPY . ./
-RUN pip install --no-deps -e .
-
-############
-# SqlAlchemy
-############
-FROM base as sqlalchemy
-RUN pip install sqlalchemy
-COPY . ./
-RUN pip install --no-deps -e .
-
+RUN pip install tox

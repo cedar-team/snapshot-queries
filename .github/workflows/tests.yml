@@ -1,19 +1,15 @@
 name: Tests
-
-on:
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
+on: [push, pull_request]
 
 jobs:
-  all:
-
+  build:
     runs-on: ubuntu-latest
-
+    strategy:
+      matrix:
+        python-version: [ 3.9 ]
     steps:
-    - uses: actions/checkout@v2
-
-    - name: Run Tests
-      run: |
-        ./test.sh --no-snapshot-update
+      - uses: actions/checkout@v2
+      - name: Build image for Python ${{ matrix.python-version }}
+        run: docker-compose build --build-args PYTHON_VERSION="${{ matrix.python-version }}"
+      - name: Run Tests
+        run: docker-compose run --rm -w /python python_tests tox

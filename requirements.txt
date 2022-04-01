@@ -1,3 +1,0 @@
-sqlparse>=0.4.1
-attrs>=20.3.0
-pygments>=2.8.1"
