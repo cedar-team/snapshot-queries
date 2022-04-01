@@ -1,4 +1,3 @@
-import setuptools
 import pathlib
 
 import pkg_resources

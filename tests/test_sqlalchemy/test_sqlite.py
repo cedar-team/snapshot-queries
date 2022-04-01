@@ -1,12 +1,13 @@
-from snapshottest import TestCase
-from sqlalchemy import create_engine, Table, Column, Integer, String, MetaData, Date
-from snapshot_queries import snapshot_queries
-from snapshot_queries.testing import SnapshotQueriesTestCase
-from pathlib import Path
 from datetime import date
+from pathlib import Path
+
 import pytest
-from .tables import Students, Classes, Tables
 import sqlalchemy.orm
+from sqlalchemy import create_engine
+
+from snapshot_queries import snapshot_queries
+
+from .tables import Classes, Students, Tables
 
 db_file = Path("/tmp/college.db")
 

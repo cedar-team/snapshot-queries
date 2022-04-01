@@ -13,8 +13,6 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-from collections import OrderedDict
-
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 TEST_RUNNER = "snapshottest.django.TestRunner"
 
@@ -76,7 +74,7 @@ WSGI_APPLICATION = "wsgi.application"
 
 
 DATABASES = {
-    "default": {"ENGINE": "django.db.backends.sqlite3", "NAME": f"/tmp/db.sqlite3"},
+    "default": {"ENGINE": "django.db.backends.sqlite3", "NAME": "/tmp/db.sqlite3"},
 }
 
 

@@ -1,19 +1,17 @@
-from snapshottest import TestCase
-from sqlalchemy import create_engine, Table, Column, Integer, String, MetaData, Date
-import sqlalchemy.orm
-from snapshot_queries import snapshot_queries
-from snapshot_queries.testing import SnapshotQueriesTestCase
 from datetime import date
+
 import pytest
-from .tables import Students, Classes, Tables
+import sqlalchemy.orm
+from sqlalchemy import create_engine
 
+from snapshot_queries import snapshot_queries
 
-metadata = MetaData()
+from .tables import Classes, Students, Tables
 
 
 def get_engine():
     return create_engine(
-        f"postgresql+psycopg2://postgres:postgres@postgres-db/postgres"
+        "postgresql+psycopg2://postgres:postgres@postgres-db/postgres"
     )
 
 

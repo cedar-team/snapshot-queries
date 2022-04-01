@@ -4,8 +4,8 @@ import logging
 from contextlib import contextmanager
 from typing import Callable, Dict
 
-from .query_list import QueryList
 from .query import Query
+from .query_list import QueryList
 
 try:
     from freezegun.api import real_time

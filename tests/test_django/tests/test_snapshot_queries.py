@@ -1,6 +1,5 @@
-from snapshot_queries import snapshot_queries
 from django.contrib.auth import get_user_model
-from snapshottest.django import TestCase
+
 from snapshot_queries import snapshot_queries
 from snapshot_queries.testing import SnapshotQueriesDjangoTestCase
 

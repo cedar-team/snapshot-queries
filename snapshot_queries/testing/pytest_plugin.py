@@ -1,7 +1,8 @@
-from snapshottest.pytest import PyTestSnapshotTest
-from snapshot_queries import snapshot_queries
-from .snapshot_queries_test_case import AssertQueriesMatchMixin
 from contextlib import contextmanager
+
+from snapshottest.pytest import PyTestSnapshotTest
+
+from .snapshot_queries_test_case import AssertQueriesMatchMixin
 
 pytest_installed = True
 try:

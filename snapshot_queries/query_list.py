@@ -1,12 +1,11 @@
 import collections
 import sys
-from typing import Dict, Callable
 from collections import UserDict
-
-from .timedelta import TimeDelta
+from typing import Callable, Dict
 
 from .query import Query
 from .sliceable_list import SliceableList
+from .timedelta import TimeDelta
 
 
 class QueryList(SliceableList):

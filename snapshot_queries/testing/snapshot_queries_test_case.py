@@ -1,9 +1,11 @@
-import snapshottest
-from contextlib import contextmanager
-from snapshot_queries import snapshot_queries
-import sqlparse
-from typing import Tuple
 import re
+from contextlib import contextmanager
+from typing import Tuple
+
+import snapshottest
+import sqlparse
+
+from snapshot_queries import snapshot_queries
 
 django_available = False
 try:
