@@ -30,7 +30,7 @@ setuptools.setup(
         "Operating System :: OS Independent",
     ],
     packages=setuptools.find_packages(
-        include=['snapshot_queries*'],
+        include=["snapshot_queries*"],
     ),
     python_requires=">=3.6",
     install_requires=[

@@ -10,6 +10,7 @@ import sqlalchemy.orm
 
 db_file = Path("/tmp/college.db")
 
+
 def get_engine():
     return create_engine(f"sqlite:///{db_file}")
 
@@ -28,7 +29,9 @@ def test_executing_queries(snapshot, db_tables):
                 # INSERT a student and a class
                 session.add(Students(id=1, first_name="Juan", last_name="Gonzalez"))
                 session.add(
-                    Classes(id=1, name="Computer Science 101", start_date=date(2020, 1, 1))
+                    Classes(
+                        id=1, name="Computer Science 101", start_date=date(2020, 1, 1)
+                    )
                 )
 
                 # SELECT all of the students and classes
@@ -37,6 +40,7 @@ def test_executing_queries(snapshot, db_tables):
 
     snapshot.assert_match(queries.display_string(colored=False, duration=False))
 
+
 def test_assert_queries_match_snapshot(snapshot_queries_fixture, db_tables):
     with snapshot_queries_fixture.assert_queries_match():
         with sqlalchemy.orm.Session(get_engine(), future=True) as session:
@@ -44,7 +48,9 @@ def test_assert_queries_match_snapshot(snapshot_queries_fixture, db_tables):
                 # INSERT a student and a class
                 session.add(Students(id=1, first_name="Juan", last_name="Gonzalez"))
                 session.add(
-                    Classes(id=1, name="Computer Science 101", start_date=date(2020, 1, 1))
+                    Classes(
+                        id=1, name="Computer Science 101", start_date=date(2020, 1, 1)
+                    )
                 )
 
                 # SELECT all of the students and classes

@@ -23,6 +23,7 @@ def db_tables():
     Tables.metadata.drop_all(engine)
     Tables.metadata.create_all(engine)
 
+
 def test_executing_queries(snapshot, db_tables):
     with snapshot_queries() as queries:
         with sqlalchemy.orm.Session(get_engine(), future=True) as session:
@@ -30,7 +31,9 @@ def test_executing_queries(snapshot, db_tables):
                 # INSERT a student and a class
                 session.add(Students(id=1, first_name="Juan", last_name="Gonzalez"))
                 session.add(
-                    Classes(id=1, name="Computer Science 101", start_date=date(2020, 1, 1))
+                    Classes(
+                        id=1, name="Computer Science 101", start_date=date(2020, 1, 1)
+                    )
                 )
 
                 # SELECT all of the students and classes
@@ -47,7 +50,9 @@ def test_assert_queries_match_snapshot(snapshot_queries_fixture, db_tables):
                 # INSERT a student and a class
                 session.add(Students(id=1, first_name="Juan", last_name="Gonzalez"))
                 session.add(
-                    Classes(id=1, name="Computer Science 101", start_date=date(2020, 1, 1))
+                    Classes(
+                        id=1, name="Computer Science 101", start_date=date(2020, 1, 1)
+                    )
                 )
 
                 # SELECT all of the students and classes

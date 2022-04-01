@@ -7,7 +7,9 @@ from snapshottest import Snapshot
 
 snapshots = Snapshot()
 
-snapshots['test_executing_queries 1'] = '''Query 1
+snapshots[
+    "test_executing_queries 1"
+] = """Query 1
 ---------
 /python/tests/test_sqlalchemy/test_sqlite.py:35 in test_executing_queries
 
@@ -48,9 +50,11 @@ session.execute(sqlalchemy.select(Classes))
 SELECT classes.id,
        classes.name,
        classes.start_date
-FROM classes'''
+FROM classes"""
 
-snapshots['test_assert_queries_match_snapshot 1'] = '''
+snapshots[
+    "test_assert_queries_match_snapshot 1"
+] = """
 4 Queries
 
 INSERT INTO classes (...)
@@ -64,4 +68,4 @@ FROM students
 
 SELECT ...
 FROM classes
-'''
+"""
