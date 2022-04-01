@@ -14,7 +14,7 @@ RUN pip install -r test.requirements.txt
 FROM base as django
 RUN pip install django
 COPY . ./
-RUN pip install --no-deps -e .
+RUN pip install --no-deps .
 
 ############
 # SqlAlchemy
@@ -22,5 +22,5 @@ RUN pip install --no-deps -e .
 FROM base as sqlalchemy
 RUN pip install sqlalchemy
 COPY . ./
-RUN pip install --no-deps -e .
+RUN pip install --no-deps .
 
