@@ -8,7 +8,6 @@ import pytest
 from .tables import Students, Classes, Tables
 import sqlalchemy.orm
 
-metadata = MetaData()
 db_file = Path("/tmp/college.db")
 
 def get_engine():
@@ -17,22 +16,12 @@ def get_engine():
 
 @pytest.fixture
 def db_tables():
-    if db_file.exists():
-        db_file.unlink()
-
     engine = get_engine()
-    metadata.create_all(engine)
-
-    try:
-        yield
-    finally:
-        # Truncate the tables at the end
-        with engine.connect() as conn:
-            for table in metadata.tables:
-                conn.execute(table.delete())
+    Tables.metadata.drop_all(engine)
+    Tables.metadata.create_all(engine)
 
 
-def test_executing_queries(snapshot):
+def test_executing_queries(snapshot, db_tables):
     with snapshot_queries() as queries:
         with sqlalchemy.orm.Session(get_engine(), future=True) as session:
             with session.begin():
@@ -48,7 +37,7 @@ def test_executing_queries(snapshot):
 
     snapshot.assert_match(queries.display_string(colored=False, duration=False))
 
-def test_assert_queries_match_snapshot(snapshot):
+def test_assert_queries_match_snapshot(snapshot, db_tables):
     # with self.assertQueriesMatchSnapshot():
     with sqlalchemy.orm.Session(get_engine(), future=True) as session:
         with session.begin():
