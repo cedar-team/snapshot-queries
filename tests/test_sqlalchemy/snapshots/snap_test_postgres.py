@@ -7,31 +7,31 @@ from snapshottest import Snapshot
 
 snapshots = Snapshot()
 
-snapshots['TestPostgres::test_executing_queries 1'] = '''Query 1
+snapshots['test_executing_queries 1'] = '''Query 1
 ---------
-/python/tests/test_sqlalchemy/test_postgres.py:52 in test_executing_queries
+/python/tests/test_sqlalchemy/test_postgres.py:37 in test_executing_queries
 
-conn.execute(
-
-INSERT INTO students (id, first_name, last_name)
-VALUES (1, Juan, Gonzalez)
-
-
-Query 2
----------
-/python/tests/test_sqlalchemy/test_postgres.py:58 in test_executing_queries
-
-conn.execute(
+session.execute(sqlalchemy.select(Students))
 
 INSERT INTO classes (id, name, start_date)
 VALUES (1, Computer Science 101, 2020-01-01)
 
 
+Query 2
+---------
+/python/tests/test_sqlalchemy/test_postgres.py:37 in test_executing_queries
+
+session.execute(sqlalchemy.select(Students))
+
+INSERT INTO students (id, first_name, last_name)
+VALUES (1, Juan, Gonzalez)
+
+
 Query 3
 ---------
-/python/tests/test_sqlalchemy/test_postgres.py:64 in test_executing_queries
+/python/tests/test_sqlalchemy/test_postgres.py:37 in test_executing_queries
 
-conn.execute(self.students.select())
+session.execute(sqlalchemy.select(Students))
 
 SELECT students.id,
        students.first_name,
@@ -41,22 +41,22 @@ FROM students
 
 Query 4
 ---------
-/python/tests/test_sqlalchemy/test_postgres.py:65 in test_executing_queries
+/python/tests/test_sqlalchemy/test_postgres.py:38 in test_executing_queries
 
-conn.execute(self.classes.select())
+session.execute(sqlalchemy.select(Classes))
 
 SELECT classes.id,
        classes.name,
        classes.start_date
 FROM classes'''
 
-snapshots['TestPostgres::test_assert_queries_match_snapshot 1'] = '''
+snapshots['test_assert_queries_match_snapshot 1'] = '''
 4 Queries
 
-INSERT INTO students (...)
+INSERT INTO classes (...)
 VALUES (...)
 
-INSERT INTO classes (...)
+INSERT INTO students (...)
 VALUES (...)
 
 SELECT ...

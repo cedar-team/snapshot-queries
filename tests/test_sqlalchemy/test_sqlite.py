@@ -37,16 +37,16 @@ def test_executing_queries(snapshot, db_tables):
 
     snapshot.assert_match(queries.display_string(colored=False, duration=False))
 
-def test_assert_queries_match_snapshot(snapshot, db_tables):
-    # with self.assertQueriesMatchSnapshot():
-    with sqlalchemy.orm.Session(get_engine(), future=True) as session:
-        with session.begin():
-            # INSERT a student and a class
-            session.add(Students(id=1, first_name="Juan", last_name="Gonzalez"))
-            session.add(
-                Classes(id=1, name="Computer Science 101", start_date=date(2020, 1, 1))
-            )
+def test_assert_queries_match_snapshot(snapshot_queries_fixture, db_tables):
+    with snapshot_queries_fixture.assert_queries_match():
+        with sqlalchemy.orm.Session(get_engine(), future=True) as session:
+            with session.begin():
+                # INSERT a student and a class
+                session.add(Students(id=1, first_name="Juan", last_name="Gonzalez"))
+                session.add(
+                    Classes(id=1, name="Computer Science 101", start_date=date(2020, 1, 1))
+                )
 
-            # SELECT all of the students and classes
-            session.execute(sqlalchemy.select(Students))
-            session.execute(sqlalchemy.select(Classes))
+                # SELECT all of the students and classes
+                session.execute(sqlalchemy.select(Students))
+                session.execute(sqlalchemy.select(Classes))

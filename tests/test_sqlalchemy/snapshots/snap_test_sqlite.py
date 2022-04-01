@@ -7,12 +7,9 @@ from snapshottest import Snapshot
 
 snapshots = Snapshot()
 
-snapshots[
-    "test_executing_queries 1"
-] = """\
-Query 1
+snapshots['test_executing_queries 1'] = '''Query 1
 ---------
-/Users/juan/github/cedar-team/snapshot-queries/tests/test_sqlalchemy/test_sqlite.py:35 in test_executing_queries
+/python/tests/test_sqlalchemy/test_sqlite.py:35 in test_executing_queries
 
 session.execute(sqlalchemy.select(Students))
 
@@ -22,7 +19,7 @@ VALUES (1, 'Computer Science 101', '2020-01-01')
 
 Query 2
 ---------
-/Users/juan/github/cedar-team/snapshot-queries/tests/test_sqlalchemy/test_sqlite.py:35 in test_executing_queries
+/python/tests/test_sqlalchemy/test_sqlite.py:35 in test_executing_queries
 
 session.execute(sqlalchemy.select(Students))
 
@@ -32,7 +29,7 @@ VALUES (1, 'Juan', 'Gonzalez')
 
 Query 3
 ---------
-/Users/juan/github/cedar-team/snapshot-queries/tests/test_sqlalchemy/test_sqlite.py:35 in test_executing_queries
+/python/tests/test_sqlalchemy/test_sqlite.py:35 in test_executing_queries
 
 session.execute(sqlalchemy.select(Students))
 
@@ -44,11 +41,27 @@ FROM students
 
 Query 4
 ---------
-/Users/juan/github/cedar-team/snapshot-queries/tests/test_sqlalchemy/test_sqlite.py:36 in test_executing_queries
+/python/tests/test_sqlalchemy/test_sqlite.py:36 in test_executing_queries
 
 session.execute(sqlalchemy.select(Classes))
 
 SELECT classes.id,
        classes.name,
        classes.start_date
-FROM classes"""
+FROM classes'''
+
+snapshots['test_assert_queries_match_snapshot 1'] = '''
+4 Queries
+
+INSERT INTO classes (...)
+VALUES (...)
+
+INSERT INTO students (...)
+VALUES (...)
+
+SELECT ...
+FROM students
+
+SELECT ...
+FROM classes
+'''

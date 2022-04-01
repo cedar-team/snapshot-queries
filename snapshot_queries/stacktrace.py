@@ -1,6 +1,6 @@
 import attr
 import os
-import pkgutil
+import importlib.util
 import traceback
 import typing
 
@@ -58,16 +58,15 @@ class StackTrace(SliceableList):
 
     @staticmethod
     def _get_module_path(module_name) -> typing.Optional[str]:
-        try:
-            package = pkgutil.get_loader(module_name)
-        except ImportError:
-            return None
-        if not package:
+        module_spec = importlib.util.find_spec(module_name)
+        if module_spec is None or module_spec.origin is None:
             return None
 
-        source_path = package.path
+        source_path = module_spec.origin
+
         if source_path.endswith("__init__.py"):
             source_path = os.path.dirname(source_path)
+
         return os.path.realpath(source_path)
 
 

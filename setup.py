@@ -16,6 +16,11 @@ setuptools.setup(
     long_description=pathlib.Path("README.md").read_text(),
     long_description_content_type="text/markdown",
     url="https://github.com/cedar-team/snapshot-queries",
+    entry_points={
+        "pytest11": [
+            "snapshot-queries = snapshot_queries.testing.pytest_plugin",
+        ]
+    },
     project_urls={
         "Bug Tracker": "https://github.com/cedar-team/snapshot-queries",
     },

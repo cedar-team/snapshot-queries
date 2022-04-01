@@ -11,15 +11,18 @@ except Exception:
 
 
 class PyTestSnapshotQueriesTest(PyTestSnapshotTest, AssertQueriesMatchMixin):
-
     @contextmanager
     def assert_queries_match(self, name=""):
         with self._assert_queries_match(name=name):
             yield
 
+    def assert_match_snapshot(self, value, name=""):
+        self.assert_match(value, name)
+
+
 if pytest_installed:
 
     @pytest.fixture
-    def snapshot_queries(request):
-        with PyTestSnapshotTest(request) as snapshot_test:
+    def snapshot_queries_fixture(request):
+        with PyTestSnapshotQueriesTest(request) as snapshot_test:
             yield snapshot_test

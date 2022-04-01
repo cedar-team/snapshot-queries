@@ -138,12 +138,7 @@ def change_query(query):
 
 class AssertQueriesMatchMixin:
     @contextmanager
-    def assertQueriesMatchSnapshot(self, name:str =""):
-        with self._assert_queries_match(name=name):
-            yield
-
-    @contextmanager
-    def _assert_queries_match(self, name: str):
+    def assertQueriesMatchSnapshot(self, name: str = ""):
         """
         Assert queries matches snapshot.
         Example:
@@ -152,6 +147,11 @@ class AssertQueriesMatchMixin:
                     with self.assertQueriesMatchSnapshot():
                         User.objects.filter(email="something@test.com")
         """
+        with self._assert_queries_match(name=name):
+            yield
+
+    @contextmanager
+    def _assert_queries_match(self, name: str):
         with snapshot_queries() as queries:
             yield queries
 
@@ -165,13 +165,14 @@ class AssertQueriesMatchMixin:
 
         two_newlines = "\n\n"
         try:
-            return self.assertMatchSnapshot(
-                f"\n{len(formatted_queries)} Queries{two_newlines}{two_newlines.join(formatted_queries)}\n", name=name
+            return self.assert_match_snapshot(
+                f"\n{len(formatted_queries)} Queries{two_newlines}{two_newlines.join(formatted_queries)}\n",
+                name=name,
             )
         except AssertionError:
             # Catch the error and make the error more useful
             # remove trailing newlines
-            prev_snapshot = self._snapshot.module[self._snapshot.test_name].strip()
+            prev_snapshot = self.module[self.test_name].strip()
             # Skip the "x Queries" line and split on separator
             previous_queries = [q for q in prev_snapshot.split(two_newlines)][1:]
 
@@ -218,7 +219,13 @@ class AssertQueriesMatchMixin:
 
 
 class SnapshotQueriesTestCase(snapshottest.TestCase, AssertQueriesMatchMixin):
-    pass
+    @property
+    def module(self):
+        return self._snapshot.module
+
+    @property
+    def test_name(self):
+        return self._snapshot.test_name
 
 
 if django_available:
@@ -226,4 +233,10 @@ if django_available:
     class SnapshotQueriesDjangoTestCase(
         snapshottest.django.TestCase, AssertQueriesMatchMixin
     ):
-        pass
+        @property
+        def module(self):
+            return self._snapshot.module
+
+        @property
+        def test_name(self):
+            return self._snapshot.test_name
