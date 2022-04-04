@@ -1,6 +1,18 @@
 # docker-compose file to facilitate local development and testing in dev and CI
 version: '3'
 services:
+  local_development:
+    build:
+      context: .
+      target: development
+      args:
+        PYTHON_VERSION: ${PYTHON_VERSION:-3.9}
+    volumes:
+      - .:/python
+    working_dir: /python
+    depends_on:
+      - postgres-db
+
   python_tests:
     build:
       context: .
