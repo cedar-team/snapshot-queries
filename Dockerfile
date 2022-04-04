@@ -4,7 +4,7 @@ FROM python:$PYTHON_VERSION as base
 
 WORKDIR /python
 
-RUN pip install tox
+RUN pip install tox==3.24.5
 
 FROM base as development
 
