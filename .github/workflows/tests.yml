@@ -13,4 +13,4 @@ jobs:
       - name: Build image for Python ${{ matrix.python-version }}
         run: docker-compose build --build-arg PYTHON_VERSION="${{ matrix.python-version }}"
       - name: Run Tests
-        run: docker-compose run --rm -e TOX_PARALLEL_NO_SPINNER=1 -w /python python_tests tox --parallel
+        run: docker-compose run --rm -e TOX_PARALLEL_NO_SPINNER=1 -w /python testing_environment tox --parallel
