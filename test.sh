@@ -2,7 +2,6 @@
 # Run tests locally against one or more versions of Python, optionally updating
 # snapshots
 
-
 # -e: if any command fails exit immediately
 # -u: fail if undefined variable is used
 # -o pipefail: return value of a pipeline is the return value of the rightmost command
@@ -34,5 +33,5 @@ do
     print_in_cyan "\nTesting Python $PYTHON_VERSION"
 
     docker-compose build --build-arg PYTHON_VERSION="$PYTHON_VERSION"
-    docker-compose run -e --rm testing_environment tox --parallel -- "$SNAPSHOT_UPDATE"
+    docker-compose run -e --rm testing_environment tox -- "$SNAPSHOT_UPDATE"
 done
