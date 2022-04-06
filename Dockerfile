@@ -11,7 +11,11 @@ FROM base as development
 # and testing
 
 # Add the bare minimum just so tox can set up the venv
-COPY pyproject.toml setup.cfg tox.ini snapshot_queries /python/
+COPY pyproject.toml /python
+COPY setup.cfg /python
+COPY tox.ini /python
+COPY snapshot_queries /python/snapshot_queries/
+
 
 ENV PATH=/venv-tox/bin:$PATH
 
