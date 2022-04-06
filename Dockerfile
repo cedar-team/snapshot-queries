@@ -16,9 +16,6 @@ COPY setup.cfg /python
 COPY tox.ini /python
 COPY snapshot_queries /python/snapshot_queries/
 
-
 ENV PATH=/venv-tox/bin:$PATH
 
 RUN tox --devenv /venv-tox -e django-and-sqlalchemy
-
-
