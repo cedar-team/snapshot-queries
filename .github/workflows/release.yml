@@ -17,7 +17,8 @@ jobs:
         token: ${{ secrets.GH_TOKEN }}
 
     - name: Python Semantic Release
-      uses: cedar-team/python-semantic-release@debugging
+      uses: relekang/python-semantic-release@6f5853c2686cac612bb7d4cc5026ef33b13c33ff #v7.27.1
       with:
         github_token: ${{ secrets.GH_TOKEN }}
-        pypi_token: ${{ secrets.PYPI_TOKEN }}
+        repository_username: __token__
+        repository_password: ${{ secrets.PYPI_TOKEN }}
