@@ -17,6 +17,7 @@ jobs:
         token: ${{ secrets.GH_TOKEN }}
 
     - name: Python Semantic Release
+      # If you update this hash, make sure to add it to the allowed workflow list in the repo's GitHub Actions config
       uses: relekang/python-semantic-release@6f5853c2686cac612bb7d4cc5026ef33b13c33ff #v7.27.1
       with:
         github_token: ${{ secrets.GH_TOKEN }}
