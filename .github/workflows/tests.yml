@@ -1,19 +1,24 @@
 name: Tests
-
-on:
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
+on: [pull_request]
 
 jobs:
-  all:
-
+  tests:
     runs-on: ubuntu-latest
-
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: [ "3.8", "3.9" ]
     steps:
-    - uses: actions/checkout@v2
-
-    - name: Run Tests
-      run: |
-        ./test.sh --no-snapshot-update
+      - uses: actions/checkout@v2
+      - name: Build image for Python ${{ matrix.python-version }}
+        run: docker-compose build --build-arg PYTHON_VERSION="${{ matrix.python-version }}"
+      - name: Run Tests
+        run: docker-compose run --rm -e TOX_PARALLEL_NO_SPINNER=1 -w /python testing_environment tox --parallel
+  linting:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build image for Python 3.9
+        run: docker-compose build --build-arg PYTHON_VERSION=3.9
+      - name: Run Tests
+        run: docker-compose run --rm -e TOX_PARALLEL_NO_SPINNER=1 -w /python testing_environment tox -e lint

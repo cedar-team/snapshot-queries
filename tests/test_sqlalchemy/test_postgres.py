@@ -1,7 +1,10 @@
-from snapshottest import TestCase
-from sqlalchemy import create_engine, Table, Column, Integer, String, MetaData, Date
-from snapshot_queries import snapshot_queries
 from datetime import date
+
+from snapshottest import TestCase
+from sqlalchemy import (Column, Date, Integer, MetaData, String, Table,
+                        create_engine)
+
+from snapshot_queries import snapshot_queries
 
 
 class TestPostgres(TestCase):
