@@ -9,7 +9,7 @@ jobs:
       matrix:
         python-version: [ "3.8", "3.9" ]
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Build image for Python ${{ matrix.python-version }}
         run: docker-compose build --build-arg PYTHON_VERSION="${{ matrix.python-version }}"
       - name: Run Tests
@@ -17,8 +17,22 @@ jobs:
   linting:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Build image for Python 3.9
         run: docker-compose build --build-arg PYTHON_VERSION=3.9
       - name: Run Tests
         run: docker-compose run --rm -e TOX_PARALLEL_NO_SPINNER=1 -w /python testing_environment tox -e lint
+  validate-commit-messages:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Set up Node
+        uses: actions/setup-node@v3
+      - name: Check commit syntax
+        # Install v16.2.3 (by commit ID)
+        run: |
+          yarn add @commitlint/cli#9128c3d5c9c9fedfb9969cc9ba4d38bdd883642f @commitlint/config-conventional#9128c3d5c9c9fedfb9969cc9ba4d38bdd883642f
+          echo "module.exports = {extends: ['@commitlint/config-conventional']}" > commitlint.config.js
+          yarn run commitlint --from HEAD~${{ github.event.pull_request.commits }} --to HEAD
