@@ -32,6 +32,7 @@ jobs:
         uses: actions/setup-node@v3
       - name: Check commit syntax
         # Install v16.2.3 (by commit ID)
+        # Configuration instructions can be found here https://github.com/conventional-changelog/commitlint#getting-started
         run: |
           yarn add @commitlint/cli#9128c3d5c9c9fedfb9969cc9ba4d38bdd883642f @commitlint/config-conventional#9128c3d5c9c9fedfb9969cc9ba4d38bdd883642f
           echo "module.exports = {extends: ['@commitlint/config-conventional']}" > commitlint.config.js
