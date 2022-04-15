@@ -4,49 +4,28 @@ from __future__ import unicode_literals
 
 from snapshottest import Snapshot
 
+
 snapshots = Snapshot()
 
-snapshots[
-    "TestSQLite::test_executing_queries 1"
-] = """Query 1
+snapshots['TestSQLite::test_executing_queries 1'] = '''Query 1
 ---------
-/python/tests/test_sqlalchemy/test_sqlite.py:47 in test_executing_queries
+/python/tests/test_sqlalchemy/test_sqlite.py:26 in test_executing_queries
 
-conn.execute(
+session.execute(session.query(Students))
 
-INSERT INTO students (id, first_name, last_name)
-VALUES (1, 'Juan', 'Gonzalez')
+SELECT students.id AS students_id,
+       students.first_name AS students_first_name,
+       students.last_name AS students_last_name
+FROM students
 
 
 Query 2
 ---------
-/python/tests/test_sqlalchemy/test_sqlite.py:53 in test_executing_queries
+/python/tests/test_sqlalchemy/test_sqlite.py:27 in test_executing_queries
 
-conn.execute(
+session.execute(session.query(Classes))
 
-INSERT INTO classes (id, name, start_date)
-VALUES (1, 'Computer Science 101', '2020-01-01')
-
-
-Query 3
----------
-/python/tests/test_sqlalchemy/test_sqlite.py:59 in test_executing_queries
-
-conn.execute(self.students.select())
-
-SELECT students.id,
-       students.first_name,
-       students.last_name
-FROM students
-
-
-Query 4
----------
-/python/tests/test_sqlalchemy/test_sqlite.py:60 in test_executing_queries
-
-conn.execute(self.classes.select())
-
-SELECT classes.id,
-       classes.name,
-       classes.start_date
-FROM classes"""
+SELECT classes.id AS classes_id,
+       classes.name AS classes_name,
+       classes.start_date AS classes_start_date
+FROM classes'''
