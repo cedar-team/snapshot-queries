@@ -11,7 +11,7 @@ print_in_cyan() {
     printf "\x1B[36m%b\x1B[0m\n" "$*"
 }
 
-PYTHON_VERSIONS=('3.8' '3.9')
+PYTHON_VERSIONS=('3.10')
 SNAPSHOT_UPDATE="--snapshot-update"
 
 for arg in "$@"; do
