@@ -4,7 +4,7 @@ from .assert_queries_match_mixin import AssertQueriesMatchMixin
 
 
 class SnapshotQueriesDjangoTestCase(
-    snapshottest.django.TestCase, AssertQueriesMatchMixin
+    AssertQueriesMatchMixin, snapshottest.django.TestCase
 ):
     @property
     def module(self):
