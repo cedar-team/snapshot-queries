@@ -1,6 +1,6 @@
 SQLALCHEMY_INSTALLED = False
 try:
-    import sqlalchemy
+    import sqlalchemy  # noqa
 except ImportError:
     pass
 else:
@@ -9,7 +9,7 @@ else:
 
 DJANGO_INSTALLED = False
 try:
-    import django
+    import django  # noqa
 except ImportError:
     pass
 else:
