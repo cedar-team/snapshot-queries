@@ -6,30 +6,21 @@ from typing import Callable, Dict
 
 from .query import Query
 from .query_list import QueryList
+from .optional_dependencies import DJANGO_INSTALLED, SQLALCHEMY_INSTALLED
 
 try:
     from freezegun.api import real_time
 except ImportError:
     from time import time as real_time
 
-sql_alchemy_available = False
-try:
+if SQLALCHEMY_INSTALLED:
     import sqlalchemy
     import sqlalchemy.sql
-except ImportError:
-    pass
-else:
-    sql_alchemy_available = True
 
 
-django_available = False
-try:
+if DJANGO_INSTALLED:
     import django.conf
     import django.db
-except ImportError:
-    pass
-else:
-    django_available = True
 
 
 logger = logging.getLogger(__name__)
@@ -41,12 +32,12 @@ def snapshot_queries():
     queries = QueryList()
 
     snapshot_queries_sqlalchemy = (
-        _snapshot_queries_sqlalchemy if sql_alchemy_available else _nullcontextmanager
+        _snapshot_queries_sqlalchemy if SQLALCHEMY_INSTALLED else _nullcontextmanager
     )
 
     snapshot_queries_django = (
         _snapshot_queries_django
-        if (django_available and django.conf.settings.configured)
+        if (DJANGO_INSTALLED and django.conf.settings.configured)
         else _nullcontextmanager
     )
 
