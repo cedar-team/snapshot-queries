@@ -4,9 +4,9 @@ import logging
 from contextlib import contextmanager
 from typing import Callable, Dict
 
+from .optional_dependencies import DJANGO_INSTALLED, SQLALCHEMY_INSTALLED
 from .query import Query
 from .query_list import QueryList
-from .optional_dependencies import DJANGO_INSTALLED, SQLALCHEMY_INSTALLED
 
 try:
     from freezegun.api import real_time
