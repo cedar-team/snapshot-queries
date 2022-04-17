@@ -14,3 +14,11 @@ except ImportError:
     pass
 else:
     DJANGO_INSTALLED = True
+
+SNAPSHOTTEST_INSTALLED = False
+try:
+    import snapshottest  # noqa
+except ImportError:
+    pass
+else:
+    SNAPSHOTTEST_INSTALLED  = True
