@@ -2,7 +2,8 @@ from datetime import date
 from pathlib import Path
 
 from snapshottest import TestCase
-from sqlalchemy import Column, Date, Integer, MetaData, String, Table, create_engine
+from sqlalchemy import (Column, Date, Integer, MetaData, String, Table,
+                        create_engine)
 
 from snapshot_queries import snapshot_queries
 
