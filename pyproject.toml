@@ -8,3 +8,6 @@ build-backend = "setuptools.build_meta"
 [tool.semantic_release]
 version_variable = "snapshot_queries/__init__.py:VERSION"
 branch = "main"
+
+[tool.isort]
+profile = "black"
