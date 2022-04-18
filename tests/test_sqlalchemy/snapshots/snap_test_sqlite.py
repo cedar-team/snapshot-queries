@@ -4,11 +4,10 @@ from __future__ import unicode_literals
 
 from snapshottest import Snapshot
 
+
 snapshots = Snapshot()
 
-snapshots[
-    "TestSQLite::test_executing_queries 1"
-] = """Query 1
+snapshots['TestSQLite::test_executing_queries 1'] = '''Query 1
 ---------
 /python/tests/test_sqlalchemy/test_sqlite.py:46 in test_executing_queries
 
@@ -49,4 +48,4 @@ conn.execute(self.classes.select())
 SELECT classes.id,
        classes.name,
        classes.start_date
-FROM classes"""
+FROM classes'''
