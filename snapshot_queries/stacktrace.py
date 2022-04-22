@@ -2,8 +2,10 @@ import os
 import pkgutil
 import traceback
 import typing
+from pathlib import Path
 
 import attr
+from regex import R
 
 from .sliceable_list import SliceableList
 
@@ -88,4 +90,9 @@ class StacktraceLine:
         return cls(path="", line_no="", func="", code="")
 
     def location(self) -> str:
-        return f"{self.path}:{self.line_no} in {self.func}"
+        l = f"{Path(self.path).relative_to(Path.cwd())}:{self.line_no}"
+
+        if self.func != "<module>":
+            l = f"{l} in {self.func}"
+
+        return l
