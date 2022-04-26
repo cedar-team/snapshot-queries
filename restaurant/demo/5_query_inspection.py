@@ -28,8 +28,14 @@ truffles, _ = Dish.objects.get_or_create(name="Truffles", category="Dinner", cos
 kobe_beef, _ = Dish.objects.get_or_create(name="Kobe Beef", category="Dinner", cost=100)
 
 
+
 with snapshot_queries() as queries_executed:
     customer = Customer.objects.create(name="Juan")
-    order = Order.objects.create(customer=customer)
-    order.dishes.add(lobster, caviar, truffles, kobe_beef)
 
+first_query = queries_executed[0]
+
+first_query.sql       # the SQL statement for this query
+first_query.code      # the Python code that triggered the query execution
+first_query.duration  # how long the query took to execute
+
+queries_executed.display()

@@ -126,7 +126,7 @@ class Query:
         if duration:
             attributes.append(self.duration.humanize())
 
-        if location:
+        if location and self.location:
             attributes.append(self.location)
 
         if code:
