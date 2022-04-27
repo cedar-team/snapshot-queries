@@ -3,7 +3,7 @@ from datetime import date
 import pytest
 from sqlalchemy import create_engine
 
-from .tables import classes, students, tables
+from .tables import classes, students
 
 
 @pytest.fixture
