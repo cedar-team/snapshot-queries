@@ -14,13 +14,10 @@ class AssertQueriesMatchMixin:
     module: str
     test_name: str
 
-    def __init__(self, *args, query_filter=None, query_rewrite=None, **kwargs):
-        self.query_filter = query_filter or default_query_filter
-        self.query_rewrite = query_rewrite or default_query_rewrite
-        super().__init__(*args, **kwargs)
-
     @contextmanager
-    def assertQueriesMatchSnapshot(self, name: str = ""):
+    def assertQueriesMatchSnapshot(
+        self, name: str = "", query_filter=None, query_rewrite=None
+    ):
         """
         Assert queries executed in block of code match saved snapshot.
 
@@ -32,21 +29,24 @@ class AssertQueriesMatchMixin:
                         User.objects.filter(email="other@test.com")
         """
 
-        with self._assert_queries_match(name=name) as queries_executed:
+        with self._assert_queries_match(
+            name=name, query_filter=None, query_rewrite=None
+        ) as queries_executed:
             yield queries_executed
 
     @contextmanager
-    def _assert_queries_match(self, name: str):
+    def _assert_queries_match(self, name: str, query_filter=None, query_rewrite=None):
+        query_filter = query_filter or default_query_filter
+        query_rewrite = query_rewrite or default_query_rewrite
+
         with snapshot_queries() as queries_executed:
             yield queries_executed
 
         filtered_queries = [
-            query
-            for query in queries_executed
-            if self.query_filter(query.sql_parameterized)
+            query for query in queries_executed if query_filter(query.sql_parameterized)
         ]
         formatted_queries = [
-            sqlparse.format(self.query_rewrite(query.sql_parameterized), reindent=True)
+            sqlparse.format(query_rewrite(query.sql_parameterized), reindent=True)
             for query in filtered_queries
         ]
 
