@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.4.0 (2022-04-27)
+### Feature
+* Install build package on auto-release ([`8476bde`](https://github.com/cedar-team/snapshot-queries/commit/8476bdef0f5109141f4f83745682f54d1275e16d))
+
 ## v0.3.0 (2022-04-27)
 ### Feature
 * Change build command for auto release ([`6e49e44`](https://github.com/cedar-team/snapshot-queries/commit/6e49e44803a7cd0b63465dc7990b4a9e33e2c408))
