@@ -21,4 +21,4 @@ try:
 except ImportError:
     pass
 else:
-    SNAPSHOTTEST_INSTALLED  = True
+    SNAPSHOTTEST_INSTALLED = True
