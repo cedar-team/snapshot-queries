@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.5.2 (2022-04-27)
+### Fix
+* Prevent possible error loading pytest plugin ([`353b8de`](https://github.com/cedar-team/snapshot-queries/commit/353b8ded05c42bd9c40cd50f6d2f6120374af343))
+
 ## v0.5.1 (2022-04-27)
 ### Fix
 * Pytest wont error if snapshottest not installed ([`a3cc3fb`](https://github.com/cedar-team/snapshot-queries/commit/a3cc3fbe5d121b11a180487e5da6c4ce6020f4c7))
