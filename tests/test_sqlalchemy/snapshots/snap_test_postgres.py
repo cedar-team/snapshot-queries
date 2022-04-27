@@ -7,46 +7,19 @@ from snapshottest import Snapshot
 snapshots = Snapshot()
 
 snapshots[
-    "TestPostgres::test_executing_queries 1"
-] = """Query 1
----------
-test_postgres.py:53 in test_executing_queries
+    "test_executing_queries 1"
+] = """
+4 Queries
 
-conn.execute(
+INSERT INTO students (...)
+VALUES (...)
 
-INSERT INTO students (id, first_name, last_name)
-VALUES (1, Juan, Gonzalez)
+INSERT INTO classes (...)
+VALUES (...)
 
-
-Query 2
----------
-test_postgres.py:59 in test_executing_queries
-
-conn.execute(
-
-INSERT INTO classes (id, name, start_date)
-VALUES (1, Computer Science 101, 2020-01-01)
-
-
-Query 3
----------
-test_postgres.py:65 in test_executing_queries
-
-conn.execute(self.students.select())
-
-SELECT students.id,
-       students.first_name,
-       students.last_name
+SELECT ...
 FROM students
 
-
-Query 4
----------
-test_postgres.py:66 in test_executing_queries
-
-conn.execute(self.classes.select())
-
-SELECT classes.id,
-       classes.name,
-       classes.start_date
-FROM classes"""
+SELECT ...
+FROM classes
+"""
