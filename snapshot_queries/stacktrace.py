@@ -2,6 +2,7 @@ import importlib.util
 import os
 import traceback
 import typing
+from pathlib import Path
 
 import attr
 
@@ -87,4 +88,18 @@ class StacktraceLine:
         return cls(path="", line_no="", func="", code="")
 
     def location(self) -> str:
-        return f"{self.path}:{self.line_no} in {self.func}"
+        """Return the human-readable location for this stacktrace line."""
+
+        l = ""
+
+        # If called in a shell, then the path will start with '<'. It's not useful
+        # to include this info.
+        if not self.path.startswith('<'):
+            l = f"{Path(self.path).relative_to(Path.cwd())}:{self.line_no}"
+
+        # If not called in a function, then func will start with '<'. It's not useful
+        # to include this info.
+        if not self.func.startswith("<"):
+            l = f"{l} in {self.func}"
+
+        return l
