@@ -1,5 +1,5 @@
 from contextlib import contextmanager
-from typing import Tuple
+from typing import Callable, Tuple
 
 import sqlparse
 
@@ -10,6 +10,10 @@ from .default_query_rewrite import default_query_rewrite
 
 
 class AssertQueriesMatchMixin:
+    assert_match_snapshot: Callable
+    module: str
+    test_name: str
+
     def __init__(self, *args, query_filter=None, query_rewrite=None, **kwargs):
         self.query_filter = query_filter or default_query_filter
         self.query_rewrite = query_rewrite or default_query_rewrite
