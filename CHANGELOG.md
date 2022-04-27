@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.3.0 (2022-04-27)
+### Feature
+* Change build command for auto release ([`6e49e44`](https://github.com/cedar-team/snapshot-queries/commit/6e49e44803a7cd0b63465dc7990b4a9e33e2c408))
+
 ## v0.2.0 (2022-04-27)
 ### Feature
 * Remove references to GH_TOKEN in auto release action ([`1667257`](https://github.com/cedar-team/snapshot-queries/commit/166725759bf31593b74fcb9c610391f29418d165))
