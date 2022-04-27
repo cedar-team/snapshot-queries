@@ -6,7 +6,6 @@ class TimeDelta(datetime.timedelta):
         result = super().__add__(other)
         return TimeDelta.from_python_timedelta(result)
 
-
     def __str__(self):
         return self.humanize()
 

@@ -94,7 +94,7 @@ class StacktraceLine:
 
         # If called in a shell, then the path will start with '<'. It's not useful
         # to include this info.
-        if not self.path.startswith('<'):
+        if not self.path.startswith("<"):
             l = f"{Path(self.path).relative_to(Path.cwd())}:{self.line_no}"
 
         # If not called in a function, then func will start with '<'. It's not useful
