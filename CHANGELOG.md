@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.5.3 (2022-04-27)
+### Fix
+* Catch AssertionError when checking if snapshottest is installed ([`a10401d`](https://github.com/cedar-team/snapshot-queries/commit/a10401dfa9c7b155d46d7c1540fc5deb5e3c5eb3))
+
 ## v0.5.2 (2022-04-27)
 ### Fix
 * Prevent possible error loading pytest plugin ([`353b8de`](https://github.com/cedar-team/snapshot-queries/commit/353b8ded05c42bd9c40cd50f6d2f6120374af343))
