@@ -19,7 +19,7 @@ SNAPSHOTTEST_INSTALLED = False
 try:
     import snapshottest
     assert snapshottest.__file__  # confirm that the snapshottest module is actually installed
-except ImportError:
+except (ImportError, AssertionError):
     pass
 else:
     SNAPSHOTTEST_INSTALLED = True
