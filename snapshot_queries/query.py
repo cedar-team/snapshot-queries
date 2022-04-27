@@ -1,5 +1,6 @@
 import sys
 import typing
+from datetime import timedelta
 
 import attr
 import sqlparse
@@ -8,7 +9,6 @@ from pygments.formatters import TerminalFormatter
 from pygments.lexers import PostgresLexer, Python3Lexer, SqlLexer
 
 from .stacktrace import StackTrace, StacktraceLine
-from .timedelta import TimeDelta
 
 
 @attr.s(auto_attribs=True, repr=False)
@@ -17,7 +17,7 @@ class Query:
 
     code: str
     db: str
-    duration: TimeDelta
+    duration: timedelta
     idx: int
     is_select: bool
     location: str
@@ -66,7 +66,7 @@ class Query:
         return cls(
             code=last_executed_line.code,
             db=db,
-            duration=TimeDelta(seconds=(stop_time - start_time)),
+            duration=timedelta(seconds=(stop_time - start_time)),
             idx=idx,
             is_select=sql.lower().strip().startswith("select"),
             location=last_executed_line.location(),

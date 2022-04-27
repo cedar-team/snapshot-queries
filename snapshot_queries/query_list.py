@@ -1,11 +1,11 @@
 import collections
 import sys
 from collections import UserDict
+from datetime import timedelta
 from typing import Callable, Dict
 
 from .query import Query
 from .sliceable_list import SliceableList
-from .timedelta import TimeDelta
 
 
 class QueryList(SliceableList):
@@ -102,7 +102,7 @@ class QueryList(SliceableList):
 
     def total_duration(self) -> int:
         """Return duration of queries."""
-        return sum((q.duration for q in self), TimeDelta())
+        return sum((q.duration for q in self))
 
     def order_by(self, field: str) -> "QueryList":
         """
@@ -145,7 +145,7 @@ class QueryList(SliceableList):
         return similar
 
     @staticmethod
-    def _order_by_duration_key(query: Query) -> TimeDelta:
+    def _order_by_duration_key(query: Query) -> timedelta:
         return query.duration
 
     @staticmethod
