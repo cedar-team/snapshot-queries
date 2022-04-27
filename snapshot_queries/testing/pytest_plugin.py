@@ -4,10 +4,10 @@ if snapshot_queries.optional_dependencies.SNAPSHOTTEST_INSTALLED:
 
     from contextlib import contextmanager
 
+    import pytest
     from snapshottest.pytest import PyTestSnapshotTest
 
     from .assert_queries_match_mixin import AssertQueriesMatchMixin
-    import pytest
 
     class PyTestSnapshotQueriesTest(PyTestSnapshotTest, AssertQueriesMatchMixin):
         @contextmanager

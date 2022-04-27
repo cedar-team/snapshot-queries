@@ -19,7 +19,6 @@ class SnapshotQueriesTest(SnapshotQueriesDjangoTestCase):
             list(User.objects.only("id").filter(id=2))
             list(User.objects.only("email").filter(id=1))
 
-
     def test_multiple_queries_duplicates(self):
         with self.assertQueriesMatchSnapshot():
             # Use list to trigger query
