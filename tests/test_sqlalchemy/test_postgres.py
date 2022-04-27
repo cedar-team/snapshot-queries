@@ -11,12 +11,6 @@ def db():
     return create_engine("postgresql+psycopg2://postgres:postgres@postgres-db/postgres")
 
 
-@pytest.fixture
-def setup_tables(db):
-    tables.drop_all(db)
-    tables.create_all(db)
-
-
 def test_executing_queries(queries_snapshot, db, setup_tables):
     with queries_snapshot.assert_match():
         with db.connect() as conn:
