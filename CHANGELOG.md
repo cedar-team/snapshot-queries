@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.5.0 (2022-04-27)
+### Feature
+* Make readme type markdown ([`243975b`](https://github.com/cedar-team/snapshot-queries/commit/243975b94e7ed723fde47a9ed58d08e732a17e78))
+
 ## v0.4.0 (2022-04-27)
 ### Feature
 * Install build package on auto-release ([`8476bde`](https://github.com/cedar-team/snapshot-queries/commit/8476bdef0f5109141f4f83745682f54d1275e16d))
