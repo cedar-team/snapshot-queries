@@ -33,5 +33,5 @@ do
     print_in_cyan "\nTesting Python $PYTHON_VERSION"
 
     docker-compose build --build-arg PYTHON_VERSION="$PYTHON_VERSION"
-    docker-compose run -e --rm testing_environment tox -- "$SNAPSHOT_UPDATE"
+    docker-compose run -e --rm testing_environment tox -e django-and-sqlalchemy -- "$SNAPSHOT_UPDATE"
 done
