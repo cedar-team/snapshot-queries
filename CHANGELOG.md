@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.5.1 (2022-04-27)
+### Fix
+* Pytest wont error if snapshottest not installed ([`a3cc3fb`](https://github.com/cedar-team/snapshot-queries/commit/a3cc3fbe5d121b11a180487e5da6c4ce6020f4c7))
+
 ## v0.5.0 (2022-04-27)
 ### Feature
 * Make readme type markdown ([`243975b`](https://github.com/cedar-team/snapshot-queries/commit/243975b94e7ed723fde47a9ed58d08e732a17e78))
