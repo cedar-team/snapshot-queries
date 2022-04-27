@@ -10,7 +10,7 @@ snapshots[
     "TestSQLite::test_executing_queries 1"
 ] = """Query 1
 ---------
-/python/tests/test_sqlalchemy/test_sqlite.py:47 in test_executing_queries
+/python/tests/test_sqlalchemy/test_sqlite.py:46 in test_executing_queries
 
 conn.execute(
 
@@ -20,7 +20,7 @@ VALUES (1, 'Juan', 'Gonzalez')
 
 Query 2
 ---------
-/python/tests/test_sqlalchemy/test_sqlite.py:53 in test_executing_queries
+/python/tests/test_sqlalchemy/test_sqlite.py:52 in test_executing_queries
 
 conn.execute(
 
@@ -30,7 +30,7 @@ VALUES (1, 'Computer Science 101', '2020-01-01')
 
 Query 3
 ---------
-/python/tests/test_sqlalchemy/test_sqlite.py:59 in test_executing_queries
+/python/tests/test_sqlalchemy/test_sqlite.py:58 in test_executing_queries
 
 conn.execute(self.students.select())
 
@@ -42,7 +42,7 @@ FROM students
 
 Query 4
 ---------
-/python/tests/test_sqlalchemy/test_sqlite.py:60 in test_executing_queries
+/python/tests/test_sqlalchemy/test_sqlite.py:59 in test_executing_queries
 
 conn.execute(self.classes.select())
 
