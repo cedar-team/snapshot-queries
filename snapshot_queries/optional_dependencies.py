@@ -17,7 +17,8 @@ else:
 
 SNAPSHOTTEST_INSTALLED = False
 try:
-    import snapshottest  # noqa
+    import snapshottest
+    assert snapshottest.__file__  # confirm that the snapshottest module is actually installed
 except ImportError:
     pass
 else:
