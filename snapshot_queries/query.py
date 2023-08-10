@@ -69,7 +69,7 @@ class Query:
             duration=TimeDelta(seconds=(stop_time - start_time)),
             idx=idx,
             is_select=sql.lower().strip().startswith("select"),
-            location=last_executed_line.location(),
+            location="",
             params=params,
             raw_params=raw_params,
             sql=sql,

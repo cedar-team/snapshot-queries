@@ -53,8 +53,7 @@ class AssertQueriesMatchMixin:
         two_newlines = "\n\n"
         try:
             return self.assert_match_snapshot(
-                f"\n{len(formatted_queries)} Queries{two_newlines}{two_newlines.join(formatted_queries)}\n",
-                name=name,
+                f"\n{len(formatted_queries)} Queries{two_newlines}{two_newlines.join(formatted_queries)}\n"
             )
         except AssertionError:
             # Catch the error and make the error more useful
