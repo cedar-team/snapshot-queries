@@ -51,57 +51,10 @@ class AssertQueriesMatchMixin:
         ]
 
         two_newlines = "\n\n"
-        try:
-            return self.assert_match_snapshot(
-                f"\n{len(formatted_queries)} Queries{two_newlines}{two_newlines.join(formatted_queries)}\n"
-            )
-        except AssertionError:
-            # Catch the error and make the error more useful
-            # remove trailing newlines
-            prev_snapshot = self.module[self.test_name].strip()
-            # Skip the "x Queries" line and split on separator
-            previous_queries = [q for q in prev_snapshot.split(two_newlines)][1:]
 
-            added, removed = _diff_lists_detailed(previous_queries, formatted_queries)
-
-            message_lines = []
-
-            if added:
-                added_strs = []
-                for i, added_query in added:
-                    # default to display the entire stacktrace
-                    stack_trace_start_idx = 0
-                    # iterate through stacktrace in reverse, stop when unittest/ is in the path
-                    for idx in range(len(filtered_queries[i].stacktrace) - 1, -1, -1):
-                        if "unittest/" in filtered_queries[i].stacktrace[idx].path:
-                            # start from the first line after unittest/ is found
-                            stack_trace_start_idx = idx + 1
-                            break
-
-                    truncated_stacktrace = filtered_queries[i].stacktrace[
-                        stack_trace_start_idx:
-                    ]
-                    added_strs.append(
-                        f"{truncated_stacktrace}{two_newlines}{added_query}"
-                    )
-
-                message_lines.extend(
-                    [
-                        "\n============Added Queries============",
-                        "\n\n\n".join(added_strs),
-                    ]
-                )
-
-            if removed:
-                message_lines.extend(
-                    [
-                        "\n==========Removed Queries============",
-                        two_newlines.join(query for _, query in removed),
-                    ]
-                )
-
-        # Throw the error after the try/except so the previous message is not shown
-        raise AssertionError("\n".join(message_lines))
+        return self.assert_match_snapshot(
+            f"\n{len(formatted_queries)} Queries{two_newlines}{two_newlines.join(formatted_queries)}\n"
+        )
 
 
 def _lcslen(x, y):
