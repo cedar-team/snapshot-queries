@@ -7,6 +7,8 @@ if snapshot_queries.optional_dependencies.SNAPSHOTTEST_INSTALLED:
     __all__ = ["SnapshotQueriesTestCase"]
 
     if snapshot_queries.optional_dependencies.DJANGO_INSTALLED:
-        from .snapshot_queries_django_test_case import SnapshotQueriesDjangoTestCase  # noqa
+        from .snapshot_queries_django_test_case import (  # noqa
+            SnapshotQueriesDjangoTestCase,
+        )
 
         __all__.append("SnapshotQueriesDjangoTestCase")
