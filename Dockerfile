@@ -4,7 +4,7 @@ FROM python:$PYTHON_VERSION as base
 
 WORKDIR /python
 
-RUN pip install tox==3.24.5
+RUN pip install tox
 
 FROM base as development
 # Configures a venv with django and sqlalchemy installed to facilitate local development
