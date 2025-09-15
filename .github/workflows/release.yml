@@ -11,13 +11,16 @@ jobs:
     concurrency: release
 
     steps:
-    - uses: actions/checkout@v3
-      with:
-        fetch-depth: 0
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
 
-    - name: Python Semantic Release
-      # If you update this hash, make sure to add it to the allowed workflow list in the repo's GitHub Actions config
-      uses: relekang/python-semantic-release@6f5853c2686cac612bb7d4cc5026ef33b13c33ff #v7.27.1
-      with:
-        repository_username: __token__
-        repository_password: ${{ secrets.PYPI_TOKEN }}
+      - name: Mark repo as safe
+        run: git config --global --add safe.directory /github/workspace
+
+      - name: Python Semantic Release
+        # If you update this hash, make sure to add it to the allowed workflow list in the repo's GitHub Actions config
+        uses: relekang/python-semantic-release@6f5853c2686cac612bb7d4cc5026ef33b13c33ff #v7.27.1
+        with:
+          repository_username: __token__
+          repository_password: ${{ secrets.PYPI_TOKEN }}
