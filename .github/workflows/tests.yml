@@ -9,7 +9,7 @@ jobs:
       matrix:
         python-version: ["3.9", "3.10", "3.11"]
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744 # v3.6.0
       - name: Build image for Python ${{ matrix.python-version }}
         run: docker compose build --build-arg PYTHON_VERSION="${{ matrix.python-version }}"
       - name: Run Tests
@@ -17,7 +17,7 @@ jobs:
   linting:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744 # v3.6.0
       - name: Build image for Python 3.9
         run: docker compose build --build-arg PYTHON_VERSION=3.9
       - name: Run Tests
@@ -25,11 +25,11 @@ jobs:
   validate-commit-messages:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744 # v3.6.0
         with:
           fetch-depth: 0
       - name: Set up Node
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
       - name: Check commit syntax
         # Install v16.2.3 (by commit ID)
         # Configuration instructions can be found here https://github.com/conventional-changelog/commitlint#getting-started
@@ -37,3 +37,5 @@ jobs:
           yarn add @commitlint/cli#9128c3d5c9c9fedfb9969cc9ba4d38bdd883642f @commitlint/config-conventional#9128c3d5c9c9fedfb9969cc9ba4d38bdd883642f
           echo "module.exports = {extends: ['@commitlint/config-conventional']}" > commitlint.config.js
           yarn run commitlint --from HEAD~${{ github.event.pull_request.commits }} --to HEAD
+
+
