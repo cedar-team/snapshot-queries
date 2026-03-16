@@ -30,6 +30,9 @@ jobs:
           fetch-depth: 0
       - name: Set up Node
         uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+      - name: Install Aikido Safe Chain
+        run: curl -fsSL https://github.com/AikidoSec/safe-chain/releases/download/1.4.4/install-safe-chain.sh | sh -s -- --ci
+
       - name: Check commit syntax
         # Install v16.2.3 (by commit ID)
         # Configuration instructions can be found here https://github.com/conventional-changelog/commitlint#getting-started
